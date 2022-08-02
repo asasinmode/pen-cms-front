@@ -1,6 +1,8 @@
 <template>
    <Navigation />
-   <RouterView />
+   <main class="flex-1">
+      <RouterView />
+   </main>
 </template>
 
 <script lang="ts">
