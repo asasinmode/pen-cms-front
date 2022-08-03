@@ -1,7 +1,7 @@
 <template>
-<div class="hidden logoContainer flex-col w-[6.5rem] h-14 text-4xl" title="logo">  <!-- make stand out -->
-   <span class="absolute -translate-x-full translate-y-2 top-0">🛠️</span>
-   <span class="absolute -translate-x-full -translate-y-2 bottom-0">🖊️</span>
+<div class="logoContainer w-[6.5rem] h-14 text-4xl flex justify-center items-center" title="logo">  <!-- make stand out -->
+   <span>🛠️</span>
+   <span>🖊️</span>
 </div>
 </template>
 
@@ -15,9 +15,9 @@ export default defineComponent({
 
 <style scoped>
 span:first-child{
-   left: calc(50% - 1rem);
+   transform: translate(0.5rem, -0.45rem);
 }
 span:last-child{
-   left: calc(50% + 1rem);
+   transform: translate(-0.5rem, 0.45rem);
 }
 </style>
