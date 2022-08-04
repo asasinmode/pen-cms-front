@@ -10,7 +10,7 @@
       <Button @click="toggleMenu" title="toggle menu button" class="toggleButton flex-row h-[4.5rem] items-center hoverable
          pl-4 -translate-y-full peer-focus-visible:translate-y-0"
       >
-         <Logo class="absolute right-[4.5rem] top-1/2 -translate-y-1/2" />
+         <Logo class="absolute right-[4.5rem] top-1/2 -translate-y-1/2 pointer-events-none" />
          <ToggleButtonIcon />
       </Button>
       <RouterLink v-for="route in routes" :to="route.path" class="flex flex-row items-center hoverable h-[4.5rem] overflow-hidden
@@ -23,7 +23,7 @@
             {{ route.name }}
          </span>
       </RouterLink>
-      <button title="toggle menu button" @click="toggleMobileMenu" ref="secondToggleButton" tabindex="-1"
+      <button title="toggle menu button" @click="toggleMenu" ref="secondToggleButton" tabindex="-1"
          class="secondToggleButton flex justify-start items-start absolute -right-3 top-3 translate-x-full rounded-full bg-gray-600 shadow-md shadow-black/40 md:hidden"
       >
          <span class="w-[4.5rem] h-[4.5rem] min-w-[4.5rem] flex items-center justify-center text-main-dark rounded-full hoverable">
@@ -47,8 +47,7 @@ export default defineComponent({
          icons: {
             dashboard: "house",
             manage: "wrench",
-            browse: "pen-clip",
-            users: "user"
+            browse: "pen-clip"
          },
          isExpanded: true,
       };
@@ -62,9 +61,6 @@ export default defineComponent({
          return this.icons[routeName as keyof typeof this.icons];
       },
       toggleMenu(){
-         this.isExpanded = !this.isExpanded
-      },
-      toggleMobileMenu(){
          this.isExpanded = !this.isExpanded
       },
       handleTabNavigation(e: KeyboardEvent){
@@ -91,7 +87,7 @@ export default defineComponent({
          return this.$router.getRoutes().map(route => ({ path: route.path, name: route.name as string }));
       },
       lastLink(){
-         return this.$refs.nav.querySelector("a[href='/users']") as HTMLLinkElement
+         return this.$refs.nav.querySelector("a[href='/browse']") as HTMLLinkElement
       },
       firstButton(){
          return this.$refs.nav.querySelector(".toggleButton") as HTMLButtonElement
