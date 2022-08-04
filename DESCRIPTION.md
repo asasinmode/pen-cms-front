@@ -17,7 +17,7 @@ Częścią projektu jest również
 
 co w moim przypadku poskutkowało stworzeniem tego dokumentu.
 
-Biorąc pod uwagę, że tak, moim zdaniem, szerokie opisanie całego procesu może być zbędne, starałem się również zwięźle opisać i streścić problemy i wyzwania techniczne jakie napotkałem i umieścić je w rozdziałach “streszczenie”.
+Biorąc pod uwagę, że, tak moim zdaniem szerokie, opisanie całego procesu może być zbędne, starałem się również zwięźle opisać i streścić problemy i wyzwania techniczne jakie napotkałem i umieścić je w rozdziałach “streszczenie”.
 
 Na swoje usprawiedliwienie lubię opowiadać o moim procesie tworzenia i chciałem podjąć się napisania opisu projektu 😛
 

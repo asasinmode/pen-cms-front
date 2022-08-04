@@ -80,7 +80,7 @@ export default defineComponent({
          }
       },
       expandMenuWhenFocused(e: FocusEvent){  // expands menu when element is focused from outside
-         if(!e.relatedTarget || e.relatedTarget === document.documentElement || e.relatedTarget === this.$refs.secondToggleButton){
+         if(e.relatedTarget !== this.lastLink && e.relatedTarget !== this.firstButton){
             if(window.innerWidth > 768 && e.target === this.lastLink){ return }  // don't open if focusing last link from outside on desktop
             this.isExpanded = true
          }
@@ -92,6 +92,9 @@ export default defineComponent({
       },
       lastLink(){
          return this.$refs.nav.querySelector("a[href='/users']") as HTMLLinkElement
+      },
+      firstButton(){
+         return this.$refs.nav.querySelector(".toggleButton") as HTMLButtonElement
       }
    },
 })
