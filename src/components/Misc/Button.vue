@@ -1,5 +1,5 @@
 <template>
-   <button @click="handleClick" class="flex relative overflow-hidden hoverable" ref="me">
+   <button @click="handleClick" class="flex relative overflow-hidden" ref="me">
       <slot />
    </button>
 </template>

@@ -1,9 +1,9 @@
 <template>
    <button class="h-14 hoverable flexCentered w-full">
       <span class="z-10 pointer-events-none" v-if="title === 'new'">
-         <FontAwesomeIcon icon="fa-solid fa-plus" size="2xl" />
+         <FontAwesomeIcon icon="fa-solid fa-plus" size="2xl" class="font-bold" />
       </span>
-      <span v-else class="">
+      <span v-else class="font-bold text-lg">
          {{ title }}
       </span>
    </button>

@@ -4,7 +4,8 @@ import router from './router'
 import './styles/index.css'
 
 import axios from 'axios'
-import FontAwesomeIcon from "./assets/fontawesome"
+import FontAwesomeIcon from "./plugins/fontawesome"
+import shake from './plugins/shake'
 
 const httpClient = axios.create({
    baseURL: 'http://localhost:8000/'
@@ -13,6 +14,7 @@ const httpClient = axios.create({
 const app = createApp(App)
 
 app.config.globalProperties.$http = httpClient
+app.config.globalProperties.$shake = shake
 
 app.component("FontAwesomeIcon", FontAwesomeIcon)
 

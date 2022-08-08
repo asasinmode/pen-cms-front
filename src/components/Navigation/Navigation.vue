@@ -7,12 +7,12 @@
       >
          skip to content
       </a>
-      <Button @click="toggleMenu" title="toggle menu button" class="toggleButton flex-row h-[4.5rem] min-h[4.5rem] items-center darkHoverable
+      <button @click="toggleMenu" title="toggle menu button" class="toggleButton relative overflow-hidden flex flex-row h-[4.5rem] min-h[4.5rem] items-center darkHoverable
          pl-4 -translate-y-full peer-focus-visible:translate-y-0"
       >
          <Logo class="absolute right-[4.5rem] top-1/2 -translate-y-1/2 pointer-events-none" />
          <ToggleButtonIcon />
-      </Button>
+      </button>
       <RouterLink v-for="route in routes" :to="route.path" class="flex flex-row items-center darkHoverable h-[4.5rem] overflow-hidden
          -translate-y-full peer-focus-visible:translate-y-0" @click="collapseMenu"
       >
@@ -116,10 +116,17 @@ nav[data-is-expanded='true']{
 .iconAngles, .iconBars, .secondToggleButton{
    transition: opacity 150ms ease, transform 150ms ease;
 }
+nav[data-is-expanded='true'] .iconAngles{
+   transform: rotate(0deg) scale(1);
+   opacity: 1;
+}
+nav[data-is-expanded='true'] .iconBars{
+   transform: rotate(180deg) scale(.5);
+   opacity: 0;
+}
 nav[data-is-expanded='true'] > a:first-child{
    width: 100% !important;
 }
-
 nav[data-is-expanded='true'] .secondToggleButton{
    width: 100vw;
    height: 100vh;

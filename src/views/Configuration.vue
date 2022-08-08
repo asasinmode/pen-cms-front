@@ -24,18 +24,26 @@ export default defineComponent({
             },
             {
                name: "ink color",
-               values: ["black", "blue", "red", "green"]
+               values: ["black", "blue", "red", "green", "one", "two", "three", "four", "five", "six", "seven", "eight", "ninth"]
             },
             {
                name: "material",
-               values: ["plastic", "metal"]
-            }
+               values: ["plastic", "metal", "ultra omega very long too long even", "fourth", "fifth", "sixth"]
+            },
+            {
+               name: "test",
+               values: ["test"]
+            },
          ]
       }
    },
    methods: {
       expandProperty(property: string){
+         this.clearRipples()
          this.selectedProperty = property
+      },
+      clearRipples(){
+         document.querySelector(".ripple")?.remove()
       }
    }
 })
