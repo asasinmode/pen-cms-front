@@ -7,13 +7,13 @@ module.exports = {
    theme: {
       extend: {
          colors: {
-            main: {
-               light: '#f0d9ff',
-               dark: '#bfa2db',
+            lilac: {
+               light: "#F4EEFF",
+               dark: "#DCD6F7"
             },
-            accent:  {
-               light: '#f3f1f5',
-               dark: '#7f7c82'
+            navy: {
+               light: "#A6B1E1",
+               dark: "#424874"
             }
          }
       },

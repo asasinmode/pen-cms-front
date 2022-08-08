@@ -1,5 +1,5 @@
 <template>
-   <button @click="handleClick" class="flex hoverable relative overflow-hidden" ref="me">
+   <button @click="handleClick" class="flex relative overflow-hidden hoverable" ref="me">
       <slot />
    </button>
 </template>
@@ -45,9 +45,6 @@ export default defineComponent({
 </script>
 
 <style>
-.ripple{
-   @apply bg-main-light/30 absolute
-}
 span.ripple{
    border-radius: 50%;
    transform: scale(0);

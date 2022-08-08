@@ -4,7 +4,13 @@
 
 @layer components{
    .hoverable{
-      @apply hover:bg-white/10 focus-visible:bg-white/10 hover:disabled:!bg-transparent focus-visible:disabled:!bg-transparent
+      @apply hover:bg-lilac-dark/40 focus-visible:bg-lilac-dark/40 hover:disabled:!bg-transparent focus-visible:disabled:!bg-transparent
+   }
+   .flexCentered{
+      @apply flex justify-center items-center
+   }
+   .ripple{
+      @apply absolute bg-lilac-dark/40
    }
 }
 
@@ -19,7 +25,6 @@
 }
 
 html, body{
-   width: 100%;
-   height: 100%;
-   overflow: hidden;
+   width: 100vw;
+   height: 100vh;
 }

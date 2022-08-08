@@ -113,9 +113,9 @@ Wynika z tego, że użytkownik nawigujący klawiaturą na urządzeniu mobilnym n
 
 Link pomijający nawigację najzwyczajniej zsuwa w dół siebie i resztę nawigacji kiedy jest zfocusowany.
 
-Dodatkowym problemem jest fakt, że guzik otwierający mobilną nawigację, kiedy jest obecnie [aktywnym](https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement) elementem, ma dookoła siebie domyślny outline wskazujący. Nie jest to problemem kiedy guzik jest w swojej domyślnej formie małego kółka, jednak kiedy guzik zmienia swój wygląda na pełnoekranowy backdrop dla nawigacji, obwódka dookoła niego jest zarówno nie na miejscu jak i zwodnicza.
+Dodatkowym problemem jest fakt, że guzik otwierający mobilną nawigację, kiedy jest obecnie [aktywnym elementem](https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement), ma dookoła siebie domyślny outline wskazujący. Nie jest to problemem kiedy guzik jest w swojej domyślnej formie małego kółka, jednak kiedy guzik zmienia swój wygląda na pełnoekranowy backdrop dla nawigacji, obwódka dookoła niego jest zarówno nie na miejscu jak i zwodnicza.
 
-Adresując najpierw drugi problem, najprostszym rozwiązaniem (poza usunięciem domyślnego stylu [aktywnych](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) elementów) będzie usunięcie go z indeksowalnych elementów strony zmieniając jego atrybut `tabindex="-1"`.To podejście może wydawać się przesadne. Mając jednak na uwadze poniższe fakty:
+Adresując najpierw drugi problem, najprostszym rozwiązaniem (poza usunięciem domyślnego stylu [aktywnych elementów](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible), co nadal pozostawia kogoś nawigującego klawiaturą w sytuacji znalezienia się w nieoczywistym miejscu) będzie usunięcie go z indeksowalnych elementów strony zmieniając jego atrybut `tabindex="-1"`.To podejście może wydawać się przesadne. Mając jednak na uwadze poniższe fakty:
 1. jedna z dwóch funkcji tego guzika, bycie backdropem, nie wymaga bycia nawigowalną
 2. guzik jest ostatnim elementem w kolejności nawigowania (znajduje się na samym końcu menu)
 3. i tak musimy zaadresować nawigowanie po elementach znajdujących się poza ekranem
@@ -124,7 +124,7 @@ minusy tego rozwiązania są praktycznie niezauważalne.
 
 Przechodząc do pierwszego problemu nawigowania po niewidocznych elementach. Biorąc pod uwagę, że pierwszym elementem do jakiego nawigujemy idąc od początku strony jest nasz link pomijający nawigację, a idąc od środka strony jest ostatni link (do strony */browse*, ostatniemu guzikowi wyłączyliśmy możliwość bycia nawigowanym do), najprościej jest dodać do obydwu tych elementów listener `onfocus` aktywujący się w momencie nawigowania na nie.
 
-Listener `onfocus` po prostu rozwija menu. Teraz kiedy ktoś nawigujący klawiaturą na urządzeniu mobilnym "najedzie" na pierwszy element naszej strony będący w domyślnie niewidocznym menu
+Listener `onfocus` po prostu rozwija menu. Teraz, kiedy ktoś nawigujący klawiaturą na urządzeniu mobilnym "najedzie" na pierwszy element naszej strony, *aktywny* element będzie zawsze widoczny.
 
 Musimy mieć jednak na uwadze fakt, że niezależnie od rozdzielczości strony nasze 2 elementy będą teraz rozwijać menu za każdym razem kiedy są zfocusowane. Oznacza to, że na nie-telefonach, w przypadku, kiedy użytkownik ręcznie zwinie sobie menu (widoczne są tylko ikonki guzików), a następnie nawiguje na pierwszy lub ostatni link, menu się rozwinie.
 
