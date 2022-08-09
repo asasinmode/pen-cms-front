@@ -23,7 +23,7 @@
                   </span>
                </Button>
             </div>
-            <div class="flex flex-row mt-4" v-if="isConfirm && !isLoading && !showError">
+            <div class="flexCentered flex-row mt-4 gap-2" v-if="isConfirm && !isLoading && !showError">
                <Button @click="closeMe" :disabled="isLoading" :focusOnMounted="true">
                   <span class="z-10 pointer-events-none">
                      cancel
