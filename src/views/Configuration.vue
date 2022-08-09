@@ -2,14 +2,16 @@
    <main class="flex flex-col">
       <Property v-for="property in testProperties" :key="property.name" @expandMe="expandProperty"
          :selectedProperty="selectedProperty" :name="property.name" :values="property.values"
+         @updateMe="handleUpdate(property.name, $event)" @deleteMe="handleDelete"
       />
-      <Property :selectedProperty="selectedProperty" :name="'new'" @expandMe="expandProperty" />
+      <Property :selectedProperty="selectedProperty" :name="'new'" @expandMe="expandProperty" @createMe="handleCreate" />
    </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Property from "@/components/Configuration/Property.vue";
+import type { ifUpdateObject } from "@/typings/configuration";
 
 export default defineComponent({
    name: "Configuration",
@@ -44,6 +46,15 @@ export default defineComponent({
       },
       clearRipples(){
          document.querySelector(".ripple")?.remove()
+      },
+      handleCreate({ name, values }: {name: string, values: any}){
+         console.log("creating", name, "with values", values)
+      },
+      handleUpdate(propertyName: string, { newName, values }: ifUpdateObject){
+         console.log("update", propertyName)
+      },
+      handleDelete(name: string){
+         console.log("deletting", name)
       }
    }
 })

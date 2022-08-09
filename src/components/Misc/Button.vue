@@ -1,5 +1,5 @@
 <template>
-   <button @click="handleClick" class="flex relative overflow-hidden" ref="me">
+   <button @click="handleClick" class="flex relative overflow-hidden flexCentered p-4 bg-navy-light w-28 rounded-[4px] mt-5 hover:bg-navy-light/70 focus-visible:bg-navy-light/70" ref="me">
       <slot />
    </button>
 </template>

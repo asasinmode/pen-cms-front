@@ -4,13 +4,15 @@
    >
       <ExpandButton @click="$emit('expandMe', name)" :title="name" :disabled="isSelected" />
       <div v-show="isSelected" class="flexCentered flex-col md:justify-start p-4 pb-6 gap-4">
-         <FilledInput :modelValue="nameInput.value" :id="`property${ name }`" :placeholder="'name'"
+         <FilledInput v-model="nameInput.value" :id="`property${ name }`" :placeholder="'name'"
             :errorMessage="nameInput.errorMessage" :showError="nameInput.showErrorMessage" :length="15.25"
+            @input="nameInput.showErrorMessage = false"
          />
          <div class="flex flex-row bg-navy-light rounded-md flex-wrap p-1 max-w-[62rem] gap-1">
             <PropertyValue v-for="(value, key) in valuesInputs" :key="`${ name }Value${ key }`" :placeholder="key"
                :value="value" @input="updateValue($event.target.value, key)"
                @focusout="deleteIfEmpty(key)" @keydown.prevent.enter="deleteIfEmpty(key)"
+               @click.ctrl="toggleValue(key)"
             />
             <PropertyValue :value="newValueInput.value" :show="newValueInput.isActive" ref="newInput"
                @focusout="setNewValue" @keydown.prevent.enter="setNewValue"
@@ -33,6 +35,7 @@ import FilledInput from "@/components/Misc/FilledInput.vue";
 import ExpandButton from "./Property/ExpandButton.vue";
 import PropertyValue from "./Property/PropertyValue.vue";
 import ChangeButtons from "./Property/ChangeButtons.vue";
+import type { ifValues } from "@/typings/configuration"
 
 export default defineComponent({
    name: "Property",
@@ -58,7 +61,7 @@ export default defineComponent({
             errorMessage: "name cannot be empty",
             showErrorMessage: false
          },
-         valuesInputs: <{ [key: string]: string }> {},
+         valuesInputs: <ifValues> {},
          newValueInput: {
             value: "",
             isActive: false
@@ -95,19 +98,40 @@ export default defineComponent({
             delete this.valuesInputs[key]
          }
       },
+      toggleValue(key: any){
+         this.valuesInputs[key] = this.valuesInputs[key].length > 0 ? "" : key
+      },
       changeHandlers(){
          return {
             add: (buttonElement: HTMLButtonElement) => {
-               console.log("adding new")
+               const isValid = this.validateMe(buttonElement)
+               if(!isValid){ return }
+
+               this.$emit("createMe", {
+                  name: this.nameInput.value,
+                  values: Object.values(this.valuesInputs)
+               })
             },
             update: (buttonElement: HTMLButtonElement) => {
-               this.$shake(buttonElement)
-               console.log("updating")
+               const isValid = this.validateMe(buttonElement)
+               if(!isValid){ return }
+
+               this.$emit("updateMe", {
+                  newName: this.nameInput.value,
+                  values: this.valuesInputs
+               })
             },
-            delete: (buttonElement: HTMLButtonElement) => {
-               console.log("deletting")
+            delete: () => {
+               this.$emit("deleteMe", this.name)
             }
          }
+      },
+      validateMe(shakeTarget: HTMLElement){
+         if(this.nameInput.value !== ""){ return true }
+
+         this.nameInput.showErrorMessage = true
+         this.$shake(shakeTarget)
+         return false
       }
    },
    computed: {
