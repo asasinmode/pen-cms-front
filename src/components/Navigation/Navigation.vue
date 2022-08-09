@@ -14,7 +14,8 @@
          <ToggleButtonIcon />
       </button>
       <RouterLink v-for="route in routes" :to="route.path" class="flex flex-row items-center darkHoverable h-[4.5rem] overflow-hidden
-         -translate-y-full peer-focus-visible:translate-y-0" @click="collapseMenu"
+         -translate-y-full peer-focus-visible:translate-y-0"
+         @click="collapseMenu"
       >
          <span class="w-[4.5rem] h-[4.5rem] min-w-[4.5rem] flex items-center justify-center text-lilac-light">
             <FontAwesomeIcon :icon="['fas', getIcon(route.name)]" size="2xl"/>
@@ -149,4 +150,10 @@ nav[data-is-expanded='true'] .secondToggleButton > span{
       width: 13rem;
    }
 }
+.router-link-active > span:first-child{
+   @apply text-navy-light
+}
+/* nav[data-is-expanded='true'] .router-link-active{
+   @apply relative before:absolute before:left-0 before:w-2 before:h-full before:bg-navy-light
+} */
 </style>

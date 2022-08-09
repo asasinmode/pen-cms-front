@@ -108,8 +108,9 @@ export default defineComponent({
                if(!isValid){ return }
 
                this.$emit("createMe", {
-                  name: this.nameInput.value,
-                  values: Object.values(this.valuesInputs)
+                  newName: this.nameInput.value,
+                  values: Object.values(this.valuesInputs),
+                  button: buttonElement
                })
             },
             update: (buttonElement: HTMLButtonElement) => {
@@ -118,11 +119,12 @@ export default defineComponent({
 
                this.$emit("updateMe", {
                   newName: this.nameInput.value,
-                  values: this.valuesInputs
+                  values: this.valuesInputs,
+                  button: buttonElement
                })
             },
-            delete: () => {
-               this.$emit("deleteMe", this.name)
+            delete: (buttonElement: HTMLButtonElement) => {
+               this.$emit("deleteMe", buttonElement)
             }
          }
       },

@@ -2,23 +2,38 @@
    <main class="flex flex-col">
       <Property v-for="property in testProperties" :key="property.name" @expandMe="expandProperty"
          :selectedProperty="selectedProperty" :name="property.name" :values="property.values"
-         @updateMe="handleUpdate(property.name, $event)" @deleteMe="handleDelete"
+         @updateMe="emitHandlers().update(property.name, $event)" @deleteMe="emitHandlers().delete(property.name, $event)"
       />
-      <Property :selectedProperty="selectedProperty" :name="'new'" @expandMe="expandProperty" @createMe="handleCreate" />
+      <Property :selectedProperty="selectedProperty" :name="'new'" @expandMe="expandProperty" @createMe="emitHandlers().create" />
+      <Modal v-if="modal.show"
+         @confirm="processChanges" @close="modalControllers().close" @cancel="modalControllers().close"
+         :isLoading="modal.isProcessing" :header="operationData.type"
+         :showError="modalComputed.showError"
+         :closeFocusTarget="modal.closeFocusTarget"
+      >
+         uwu
+      </Modal>
    </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Property from "@/components/Configuration/Property.vue";
-import type { ifUpdateObject } from "@/typings/configuration";
+import { type ifUpdateObject, enModalOperationType, type ifOperationData } from "@/typings/configuration";
+import Modal from "@/components/Misc/Modal.vue";
 
 export default defineComponent({
    name: "Configuration",
-   components: { Property },
+   components: { Property, Modal },
    data(){
       return {
          selectedProperty: "",
+         modal: {
+            show: false,
+            closeFocusTarget: <HTMLElement | undefined> undefined,
+            isDelete: false,
+            isProcessing: false,
+         },
          testProperties: [
             {
                name: "brand",
@@ -36,7 +51,14 @@ export default defineComponent({
                name: "test",
                values: ["test"]
             },
-         ]
+         ],
+         operationData: <ifOperationData> {
+            type: enModalOperationType.add,
+            added: {},
+            updated: {},
+            deleted: {}
+         },
+         error: <any> undefined
       }
    },
    methods: {
@@ -47,14 +69,69 @@ export default defineComponent({
       clearRipples(){
          document.querySelector(".ripple")?.remove()
       },
-      handleCreate({ name, values }: {name: string, values: any}){
-         console.log("creating", name, "with values", values)
+      resetOperationData(){
+         this.operationData.added = {}
+         this.operationData.updated = {}
+         this.operationData.deleted = {}
       },
-      handleUpdate(propertyName: string, { newName, values }: ifUpdateObject){
-         console.log("update", propertyName)
+      emitHandlers(){
+         return {
+            create: ({ newName, values, button }: ifUpdateObject) => {
+               console.log("preparing data for create modal", newName, "with values", values)
+
+               this.operationData.type = enModalOperationType.add
+
+               this.modalControllers().open(false, button)
+            },
+            update: (propertyName: string, { newName, values, button }: ifUpdateObject) => {
+               console.log("preparing data for update modal", propertyName)
+
+               this.operationData.type = enModalOperationType.update
+
+               this.modalControllers().open(false, button)
+            },
+            delete: (name: string, closeFocusTarget: HTMLButtonElement) => {
+               console.log("preparing data for delete modal", name)
+
+               this.operationData.type = enModalOperationType.delete
+
+               this.modalControllers().open(true, closeFocusTarget)
+            }
+         }
       },
-      handleDelete(name: string){
-         console.log("deletting", name)
+      modalControllers(){
+         return {
+            open: (isDelete: boolean, closeFocusTarget: HTMLButtonElement) => {
+               this.modal.closeFocusTarget = closeFocusTarget
+               this.modal.isDelete = isDelete
+               this.modal.show = true
+
+               isDelete && this.updateAffectedByChangeData()
+            },
+            close: () => {
+               this.modal.show = false
+               this.error = undefined
+               this.modalControllers().reset()
+               this.resetOperationData()
+            },
+            reset: () => {
+               this.modal.isDelete = false
+               this.modal.isProcessing = false
+            }
+         }
+      },
+      updateAffectedByChangeData(){
+         console.log("getting update info")
+      },
+      processChanges(){
+
+      }
+   },
+   computed: {
+      modalComputed(){
+         return {
+            showError: this.error !== undefined
+         }
       }
    }
 })
