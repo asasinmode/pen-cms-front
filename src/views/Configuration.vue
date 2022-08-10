@@ -19,8 +19,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Property from "@/components/Configuration/Property.vue";
-import { type ifUpdateObject, enModalOperationType, type ifOperationData } from "@/typings/configuration";
 import Modal from "@/components/Misc/Modal.vue";
+import { enModalOperationType, type ifOperationData, type ifUpdateObject } from "@/typings/configuration";
 
 export default defineComponent({
    name: "Configuration",
