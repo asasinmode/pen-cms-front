@@ -1,6 +1,6 @@
-# rekrutacja-cms-front
+# front
 
-frontend do cms do rekrutacji stworzony jako **SPA** przy pomocy [Vue](https://vuejs.org/), [TailwindCSS](https://tailwindcss.com/) oraz [Font Awesome](https://fontawesome.com/)
+frontend do **pen-cms** stworzony jako **SPA** przy pomocy [Vue](https://vuejs.org/), [TailwindCSS](https://tailwindcss.com/) oraz [Font Awesome](https://fontawesome.com/)
 
 ### link do działającej strony zostanie dodany po ukończeniu projektu
 
