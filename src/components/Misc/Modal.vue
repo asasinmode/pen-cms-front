@@ -1,40 +1,24 @@
 <template>
    <Teleport to="body">
       <div class="fixed w-[100vw] h-[100vh] inset-0 bg-black/40 flex justify-center items-start z-[100]"
-         @click.self="closeMe" @keydown.esc="closeMe" @keydown.tab="handleTabNavigation"
+         @click.self="close" @keydown.esc="close" @keydown.tab="handleTabNavigation"
       >
          <article class="bg-lilac-light flex flex-col p-4 overflow-y-auto overflow-x-hidden shadow-black/30 shadow-md relative mt-10 md:mt-24 rounded-md"
             ref="contentContainer"
             aria-role="dialog" aria-live="polite" :aria-busy="isLoading" aria-modal="true" aria-labelledby="dialogLabel"
          >
-            <h1 id="dialogLabel" v-show="headerText.length && !isLoading" class="text-center text-3xl mb-4" :class="{ 'error': showError }">
-               {{ headerText }}
-            </h1>
-            <section v-if="!isLoading" class="flex flex-col">
+            <Header :showDefault="!isLoading && !showError" :showError="!isLoading && showError">
+               <slot name="header" />
+            </Header>
+            <section v-show="!isLoading" class="flex flex-col">
                <slot />
             </section>
             <div v-show="isLoading" class="overflow-hidden flex justify-center items-center flex-1">
                <Loading />
             </div>
-            <div v-if="showError && !isLoading" class="flex flex-col">
-               <Button @click="closeMe" :focusOnMounted="true">
-                  <span class="z-10 pointer-events-none">
-                     close
-                  </span>
-               </Button>
-            </div>
-            <div class="flexCentered flex-row mt-4 gap-2" v-if="isConfirm && !isLoading && !showError">
-               <Button @click="closeMe" :disabled="isLoading" :focusOnMounted="true">
-                  <span class="z-10 pointer-events-none">
-                     cancel
-                  </span>
-               </Button>
-               <Button @click="confirm" :disabled="isLoading">
-                  <span class="z-10 pointer-events-none">
-                     confirm
-                  </span>
-               </Button>
-            </div>
+            <ControlButtons v-show="!isLoading" :showClose="showError" :disable="isLoading"
+               @close="close" @confirm="confirm" @cancel="cancel"
+            />
          </article>
       </div>
    </Teleport>
@@ -44,22 +28,16 @@
 import { defineComponent } from "vue";
 import Button from "@/components/Misc/Button.vue";
 import Loading from "@/components/Misc/Loading.vue";
+import Header from "./Modal/Header.vue";
+import ControlButtons from "./Modal/ControlButtons.vue";
 
 export default defineComponent({
    name: "Modal",
-   components: { Button, Loading },
+   components: { Button, Loading, Header, ControlButtons },
    props: {
-      isConfirm: {
-         type: Boolean,
-         default: true
-      },
       isLoading: {
          type: Boolean,
          default: false
-      },
-      header: {
-         type: String,
-         default: ""
       },
       closeFocusTarget: {
          type: HTMLElement
@@ -71,7 +49,7 @@ export default defineComponent({
    },
    emits: ["close", "confirm", "cancel"],
    methods: {
-      closeMe() {
+      close() {
          !this.isLoading && this.$emit("close");
       },
       confirm(){
@@ -92,11 +70,6 @@ export default defineComponent({
             e.preventDefault()
             return
          }
-      }
-   },
-   computed: {
-      headerText(){
-         return this.showError ? "an error has occurred" : this.header
       }
    },
    mounted(){

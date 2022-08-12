@@ -1,5 +1,5 @@
 <template>
-<div class="logoContainer w-[7.5rem] h-14 text-4xl flexCentered" title="logo">  <!-- make stand out -->
+<div class="logoContainer w-[8rem] h-14 text-4xl flexCentered" title="logo">  <!-- make stand out -->
    <span>🛠️</span>
    <span>🖊️</span>
 </div>

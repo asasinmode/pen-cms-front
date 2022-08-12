@@ -1,11 +1,23 @@
-export interface ifValues {
-   [key: string]: string
+export type ifValues = Record<string, string>
+
+export interface ifSummaryDeletedValue {
+   number: number;
+}
+export interface ifSummaryUpdatedValue extends ifSummaryDeletedValue {
+   newName: string
 }
 
-export interface ifUpdateObject {
-   newName: string;
+export type ifSummaryValue = ifSummaryDeletedValue | ifSummaryUpdatedValue
+
+export interface ifUpdatePropertyObject {
+   newPropertyName: string;
    values: ifValues;
    button: HTMLButtonElement;
+}
+export interface ifCreatePropertyObject {
+   newPropertyName: string;
+   values: string[];
+   button: HTMLButtonElement
 }
 
 export enum enModalOperationType {
@@ -16,7 +28,15 @@ export enum enModalOperationType {
 
 export interface ifOperationData {
    type: enModalOperationType;
-   added: ifValues;
-   updated: ifValues;
-   deleted: ifValues;
+   propertyName: string;
+   newName?: string;
+   added: string[];
+   updated: Record<string, ifSummaryUpdatedValue>;
+   deleted: Record<string, ifSummaryDeletedValue>;
+   affectedByDelete?: number;
+}
+
+export interface ifProperty {
+   name: string,
+   values: string[]
 }

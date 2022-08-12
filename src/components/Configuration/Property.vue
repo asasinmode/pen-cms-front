@@ -9,7 +9,7 @@
             @input="nameInput.showErrorMessage = false"
          />
          <div class="flex flex-row bg-navy-light rounded-md flex-wrap p-1 max-w-[62rem] gap-1">
-            <PropertyValue v-for="(value, key) in valuesInputs" :key="`${ name }Value${ key }`" :placeholder="key"
+            <PropertyValue v-for="(value, key) in valuesInputs" :key="`${ name }Value${ key }`" :placeholder="!isNew ? key : ''"
                :value="value" @input="updateValue($event.target.value, key)"
                @focusout="deleteIfEmpty(key)" @keydown.prevent.enter="deleteIfEmpty(key)"
                @click.ctrl="toggleValue(key)"
@@ -108,7 +108,7 @@ export default defineComponent({
                if(!isValid){ return }
 
                this.$emit("createMe", {
-                  newName: this.nameInput.value,
+                  newPropertyName: this.nameInput.value,
                   values: Object.values(this.valuesInputs),
                   button: buttonElement
                })
@@ -118,7 +118,7 @@ export default defineComponent({
                if(!isValid){ return }
 
                this.$emit("updateMe", {
-                  newName: this.nameInput.value,
+                  newPropertyName: this.nameInput.value,
                   values: this.valuesInputs,
                   button: buttonElement
                })
@@ -134,6 +134,12 @@ export default defineComponent({
          this.nameInput.showErrorMessage = true
          this.$shake(shakeTarget)
          return false
+      },
+      resetMe(){
+         this.nameInput.value = ""
+         this.valuesInputs = {}
+         this.newValueInput.value = ""
+         this.newValueInput.isActive = false
       }
    },
    computed: {

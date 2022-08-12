@@ -1,4 +1,4 @@
-import shake from "../assets/shake";
+import shake from "../plugins/shake";
 
 declare module '@vue/runtime-core' {
    export interface ComponentCustomProperties {

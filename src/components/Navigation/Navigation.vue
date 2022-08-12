@@ -1,5 +1,5 @@
 <template>
-   <nav :data-is-expanded="isExpanded" class="h-full flex flex-col text-xl font-semibold bg-navy-dark w-52 fixed md:w-[4.5rem] md:static z-10 text-white"
+   <nav :data-is-expanded="isExpanded" class="h-full flex flex-col text-xl font-semibold bg-navy-dark w-[13.5rem] fixed md:w-[4.5rem] md:static z-10 text-white"
       @keydown.tab="handleTabNavigation" ref="nav"
    >
       <a href="#skipTarget" class="flex flex-row items-center text-lg darkHoverable justify-center h-[4.5rem] w-[4.5rem] p-2
@@ -7,13 +7,13 @@
       >
          skip to content
       </a>
-      <button @click="toggleMenu" title="toggle menu button" class="toggleButton relative overflow-hidden flex flex-row h-[4.5rem] min-h[4.5rem] items-center darkHoverable
+      <button @click="toggleMenu" title="toggle menu button" class="toggleButton relative overflow-hidden flex flex-row h-[4.5rem] items-center darkHoverable
          pl-4 -translate-y-full peer-focus-visible:translate-y-0"
       >
          <Logo class="absolute right-[4.5rem] top-1/2 -translate-y-1/2 pointer-events-none" />
          <ToggleButtonIcon />
       </button>
-      <RouterLink v-for="route in routes" :to="route.path" class="flex flex-row items-center darkHoverable h-[4.5rem] overflow-hidden
+      <RouterLink v-for="route in routes" :to="route.path" class="flex flex-row items-center darkHoverable h-[4.5rem] min-h[4.5rem] overflow-hidden
          -translate-y-full peer-focus-visible:translate-y-0"
          @click="collapseMenu"
       >
@@ -147,7 +147,7 @@ nav[data-is-expanded='true'] .secondToggleButton > span{
       box-shadow: unset;
    }
    nav[data-is-expanded='true']{
-      width: 13rem;
+      width: 13.5rem;
    }
 }
 .router-link-active > span:first-child{
