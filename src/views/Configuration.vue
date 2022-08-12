@@ -15,14 +15,14 @@
                {{ modalComputed.headerPrefix }} <span class="highlighted">{{ operationData.propertyName }}</span>
             </template>
             <template v-if="error === undefined" #default>
-               <SummaryNewName v-if="operationData.newName" />
+               <SummaryNewName v-if="operationData.newName" :name="operationData.newName" :affectedCount="operationData.affectedCount" />
                <SummaryValues v-if="operationData.type !== 'delete'"
                   :added="operationData.added"
                   :updated="operationData.updated"
                   :deleted="operationData.deleted"
                />
                <h3 v-else-if="operationData.type === 'delete'" class="text-2xl text-center">
-                  <span class="highlighted">{{ operationData.affectedByDelete }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} are going to be affected
+                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} are going to be affected
                </h3>
             </template>
             <template v-else #default>
@@ -111,12 +111,13 @@ export default defineComponent({
                this.operationData.propertyName = propertyName
                if(newPropertyName !== propertyName){
                   this.operationData.newName = newPropertyName
+                  console.log("setting new name", this.operationData.newName)
                }
 
                try {
                   const changedValues = this.filterChangedValues(oldValues)
                   const { updated: numberOfAffectedByUpdate, deleted: numberOfAffectedByDelete } = await this.affectedByUpdate(propertyName, changedValues).then(res => res.data)
-                  this.operationData.affectedByDelete = await this.affectedByDeletion(propertyName).then(res => res.data[propertyName])
+                  this.operationData.affectedCount = await this.getAffectedCount(propertyName).then(res => res.data[propertyName])
 
                   this.operationData.added = newValues
                   this.operationData.updated = numberOfAffectedByUpdate ?
@@ -151,7 +152,7 @@ export default defineComponent({
                this.operationData.propertyName = name
 
                try {
-                  this.operationData.affectedByDelete = await this.affectedByDeletion(name).then(res => res.data[name])
+                  this.operationData.affectedCount = await this.getAffectedCount(name).then(res => res.data[name])
                } catch(e){
                   this.error = e
                   this.modal.isProcessing = false
@@ -188,7 +189,7 @@ export default defineComponent({
             }
          })
       },
-      affectedByDeletion(propertyName: string){
+      getAffectedCount(propertyName: string){
          return this.$http("affectedBy/delete", {
             params: {
                property: propertyName
@@ -292,7 +293,7 @@ export default defineComponent({
          }
       },
       isAffectedNumberPlural(){
-         return this.operationData.affectedByDelete ? this.operationData.affectedByDelete > 1 ? true : false : false
+         return this.operationData.affectedCount ? this.operationData.affectedCount > 1 ? true : false : false
       }
    }
 })

@@ -30,7 +30,7 @@ export interface ifOperationData {
    added: string[];
    updated: Record<string, ifSummaryUpdateValue>;
    deleted: Record<string, number>;
-   affectedByDelete?: number;
+   affectedCount?: number;
 }
 
 export interface ifProperty {

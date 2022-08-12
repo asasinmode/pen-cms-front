@@ -3,7 +3,7 @@
       <h3 class="text-2xl text-center">
          changing name to <span class="highlighted">{{ name }}</span>
       </h3>
-      <span class="text-base flexCentered gap-1"><span class="highlighted">{{ affectedBy }}</span> pen{{ isPlural ? "s are" : " is" }} going to be affected</span>
+      <span class="text-base flexCentered gap-1"><span class="highlighted">{{ affectedCount }}</span> pen{{ isPlural ? "s are" : " is" }} going to be affected</span>
    </div>
 </template>
 
@@ -14,11 +14,11 @@ export default defineComponent({
    name: "NewName",
    props: {
       name: String,
-      affectedBy: Number
+      affectedCount: Number
    },
    computed: {
       isPlural(){
-         return this.affectedBy! > 1
+         return this.affectedCount! > 1
       }
    }
 })
