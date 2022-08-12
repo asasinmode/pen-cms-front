@@ -7,14 +7,14 @@
       </Button>
    </div>
    <div v-else class="flex flex-row gap-3">
-      <Button :title="'save'" @click="$emit('updateMe', $event.target)">
-         <span class="z-10 pointer-events-none">
-            save
-         </span>
-      </Button>
       <Button :title="'delete'" @click="$emit('deleteMe', $event.target)">
          <span class="z-10 pointer-events-none">
             delete
+         </span>
+      </Button>
+      <Button :title="'save'" @click="$emit('updateMe', $event.target)">
+         <span class="z-10 pointer-events-none">
+            save
          </span>
       </Button>
    </div>

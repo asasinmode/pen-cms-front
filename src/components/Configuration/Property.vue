@@ -9,7 +9,7 @@
             @input="nameInput.showErrorMessage = false"
          />
          <div class="flex flex-row bg-navy-light rounded-md flex-wrap p-1 max-w-[62rem] gap-1">
-            <PropertyValue v-for="(value, key) in valuesInputs" :key="`${ name }Value${ key }`" :placeholder="!isNew ? key : ''"
+            <PropertyValue v-for="(value, key) in combinedValuesExistingNew" :key="`${ name }Value${ key }`" :placeholder="!isNew ? key : ''"
                :value="value" @input="updateValue($event.target.value, key)"
                @focusout="deleteIfEmpty(key)" @keydown.prevent.enter="deleteIfEmpty(key)"
                @click.ctrl="toggleValue(key)"
@@ -35,7 +35,7 @@ import FilledInput from "@/components/Misc/FilledInput.vue";
 import ExpandButton from "./Property/ExpandButton.vue";
 import PropertyValue from "./Property/PropertyValue.vue";
 import ChangeButtons from "./Property/ChangeButtons.vue";
-import type { ifValues } from "@/typings/configuration"
+import type { ifValues, ifUpdatePropertyObject } from "@/typings/configuration"
 
 export default defineComponent({
    name: "Property",
@@ -62,6 +62,7 @@ export default defineComponent({
             showErrorMessage: false
          },
          valuesInputs: <ifValues> {},
+         newValuesInputs: <ifValues> {},
          newValueInput: {
             value: "",
             isActive: false
@@ -77,7 +78,7 @@ export default defineComponent({
    },
    methods: {
       updateValue(newValue: string, key: any){
-         this.valuesInputs[key] = newValue
+         this.setValue(key, newValue)
       },
       focusNewInput(){
          this.newValueInput.isActive = true
@@ -87,18 +88,23 @@ export default defineComponent({
       },
       setNewValue(){
          this.newValueInput.isActive = false
+
          const newValue = this.newInputElement.value
          if(newValue === ""){ return }
-         this.valuesInputs[newValue] = newValue
+
+         this.newValuesInputs[newValue] = newValue
       },
       deleteIfEmpty(key: any){
-         if(!this.isNew){ return }
-         const currentValue = this.valuesInputs[key]
-         if(currentValue === ""){
-            delete this.valuesInputs[key]
+         const currentValue = this.combinedValuesExistingNew[key]
+         if(currentValue === "" && this.isANewValue(key)){
+            delete this.newValuesInputs[key]
          }
       },
       toggleValue(key: any){
+         if(this.isANewValue(key)){
+            this.newValuesInputs[key] = this.newValuesInputs[key].length > 0 ? "" : key
+            return
+         }
          this.valuesInputs[key] = this.valuesInputs[key].length > 0 ? "" : key
       },
       changeHandlers(){
@@ -109,7 +115,7 @@ export default defineComponent({
 
                this.$emit("createMe", {
                   newPropertyName: this.nameInput.value,
-                  values: Object.values(this.valuesInputs),
+                  values: Object.values(this.combinedValuesExistingNew),
                   button: buttonElement
                })
             },
@@ -119,9 +125,10 @@ export default defineComponent({
 
                this.$emit("updateMe", {
                   newPropertyName: this.nameInput.value,
-                  values: this.valuesInputs,
+                  oldValues: this.valuesInputs,
+                  newValues: Object.values(this.newValuesInputs),
                   button: buttonElement
-               })
+               } as ifUpdatePropertyObject)
             },
             delete: (buttonElement: HTMLButtonElement) => {
                this.$emit("deleteMe", buttonElement)
@@ -138,8 +145,19 @@ export default defineComponent({
       resetMe(){
          this.nameInput.value = ""
          this.valuesInputs = {}
+         this.newValuesInputs = {}
          this.newValueInput.value = ""
          this.newValueInput.isActive = false
+      },
+      setValue(key: string, value: string){
+         if(this.isANewValue(key)){
+            this.newValuesInputs[key] = value
+            return
+         }
+         this.valuesInputs[key] = value
+      },
+      isANewValue(key: string){
+         return Object.keys(this.newValuesInputs).includes(key)
       }
    },
    computed: {
@@ -151,6 +169,12 @@ export default defineComponent({
       },
       newInputElement(){
          return (this.$refs.newInput as any).$refs.inputElement
+      },
+      combinedValuesExistingNew(){
+         return {
+            ...this.valuesInputs,
+            ...this.newValuesInputs
+         }
       }
    }
 })

@@ -37,7 +37,7 @@ export default defineComponent({
       },
       focusMe(){
          this.$nextTick(() => {
-            this.$refs.me.focus()
+            this.$refs.me.focus()   
          })
       }
    }

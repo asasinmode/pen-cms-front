@@ -1,17 +1,14 @@
 export type ifValues = Record<string, string>
 
-export interface ifSummaryDeletedValue {
-   number: number;
+export interface ifSummaryUpdateValue {
+   newName: string,
+   affectedCount: number
 }
-export interface ifSummaryUpdatedValue extends ifSummaryDeletedValue {
-   newName: string
-}
-
-export type ifSummaryValue = ifSummaryDeletedValue | ifSummaryUpdatedValue
 
 export interface ifUpdatePropertyObject {
    newPropertyName: string;
-   values: ifValues;
+   oldValues: ifValues;
+   newValues: string[];
    button: HTMLButtonElement;
 }
 export interface ifCreatePropertyObject {
@@ -31,8 +28,8 @@ export interface ifOperationData {
    propertyName: string;
    newName?: string;
    added: string[];
-   updated: Record<string, ifSummaryUpdatedValue>;
-   deleted: Record<string, ifSummaryDeletedValue>;
+   updated: Record<string, ifSummaryUpdateValue>;
+   deleted: Record<string, number>;
    affectedByDelete?: number;
 }
 

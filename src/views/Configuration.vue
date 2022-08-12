@@ -14,15 +14,19 @@
             <template v-slot:header>
                {{ modalComputed.headerPrefix }} <span class="highlighted">{{ operationData.propertyName }}</span>
             </template>
-            <template #default>
-               <ValuesSummary v-if="!operationData.affectedByDelete"
+            <template v-if="error === undefined" #default>
+               <SummaryNewName v-if="operationData.newName" />
+               <SummaryValues v-if="operationData.type !== 'delete'"
                   :added="operationData.added"
                   :updated="operationData.updated"
                   :deleted="operationData.deleted"
                />
-               <div v-else>
-                  deleting stuff, affected {{ operationData.affectedByDelete }}
-               </div>
+               <h3 v-else-if="operationData.type === 'delete'" class="text-2xl text-center">
+                  <span class="highlighted">{{ operationData.affectedByDelete }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} are going to be affected
+               </h3>
+            </template>
+            <template v-else #default>
+               <ErrorMessage v-if="error !== undefined" :error="error" />
             </template>
          </Modal>
       </template>
@@ -38,17 +42,14 @@ import { enModalOperationType } from "@/typings/configuration";
 import type { ifOperationData, ifUpdatePropertyObject, ifCreatePropertyObject, ifValues, ifProperty } from "@/typings/configuration";
 import Property from "@/components/Configuration/Property.vue";
 import Modal from "@/components/Misc/Modal.vue";
-import ValuesSummary from "../components/Configuration/ValuesSummary.vue";
+import SummaryValues from "@/components/Configuration/Summary/Values.vue";
+import SummaryNewName from "@/components/Configuration/Summary/NewName.vue"
 import Loading from "../components/Misc/Loading.vue";
-
-interface ifAffected {
-   updated: Record<string, number>;
-   deleted: Record<string, number>;
-}
+import ErrorMessage from "@/components/Misc/ErrorMessage.vue";
 
 export default defineComponent({
    name: "Configuration",
-   components: { Property, Modal, ValuesSummary, Loading },
+   components: { Property, Modal, SummaryValues, Loading, ErrorMessage, SummaryNewName },
    data(){
       return {
          selectedProperty: "",
@@ -70,16 +71,13 @@ export default defineComponent({
       }
    },
    mounted(){
-      this.refreshData()
-   },
-   methods: {
-      refreshData(){
-         this.isLoading = true
+      this.isLoading = true
          this.$http.get('properties').then(res => {
             this.properties = res.data
             this.isLoading = false
          })
-      },
+   },
+   methods: {
       expandProperty(property: string){
          this.clearRipples()
          this.selectedProperty = property
@@ -105,7 +103,7 @@ export default defineComponent({
 
                this.modalControllers().open(button)
             },
-            update: async (propertyName: string, { newPropertyName, values, button }: ifUpdatePropertyObject) => {
+            update: async (propertyName: string, { newPropertyName, oldValues, newValues, button }: ifUpdatePropertyObject) => {
                this.modal.isProcessing = true
                this.modalControllers().open(button)
 
@@ -116,23 +114,28 @@ export default defineComponent({
                }
 
                try {
-                  const changedValues = this.filterChangedValues(values)
-                  const { updated: numberOfAffectedByUpdate, deleted: numberOfAffectedByDelete } = await this.affectedByUpdate(propertyName, changedValues)
+                  const changedValues = this.filterChangedValues(oldValues)
+                  const { updated: numberOfAffectedByUpdate, deleted: numberOfAffectedByDelete } = await this.affectedByUpdate(propertyName, changedValues).then(res => res.data)
+                  this.operationData.affectedByDelete = await this.affectedByDeletion(propertyName).then(res => res.data[propertyName])
 
-                  this.operationData.updated = Object.keys(numberOfAffectedByUpdate).reduce((previous, current) => ({
-                     ...previous,
-                     [current]: {
-                        newName: values[current],
-                        number: numberOfAffectedByUpdate[current]
-                     }
-                  }), {})
-                  this.operationData.deleted = Object.keys(numberOfAffectedByDelete).reduce((previous, current) => ({
-                     ...previous,
-                     [current]: {
-                        number: numberOfAffectedByDelete[current]
-                     }
-                  }), {})
+                  this.operationData.added = newValues
+                  this.operationData.updated = numberOfAffectedByUpdate ?
+                     Object.keys(numberOfAffectedByUpdate).reduce((previous, current) => ({
+                        ...previous,
+                        [current]: {
+                           newName: oldValues[current],
+                           affectedCount: numberOfAffectedByUpdate[current]
+                        }
+                     }), {})
+                     : {}
+                  this.operationData.deleted = numberOfAffectedByDelete ? 
+                     Object.keys(numberOfAffectedByDelete).reduce((previous, current) => ({
+                        ...previous,
+                        [current]: numberOfAffectedByDelete[current]
+                     }), {})
+                     : {}
                } catch(e){
+                  console.error(e)
                   this.error = e
                   this.modal.isProcessing = false
                   return
@@ -148,7 +151,7 @@ export default defineComponent({
                this.operationData.propertyName = name
 
                try {
-                  this.operationData.affectedByDelete = await this.affectedByDeletion(name)
+                  this.operationData.affectedByDelete = await this.affectedByDeletion(name).then(res => res.data[name])
                } catch(e){
                   this.error = e
                   this.modal.isProcessing = false
@@ -173,24 +176,24 @@ export default defineComponent({
             }
          }
       },
-      affectedByUpdate(propertyName: string, values: ifValues): Promise<ifAffected>{
-         return new Promise((resolve, reject) => setTimeout(() => {
-            // const affected = this.testProperties.find(property => property.name === propertyName)
-            // console.log("apiiing deletion of", propertyName, affected)
+      affectedByUpdate(propertyName: string, values: ifValues){
+         const deleted = Object.keys(values).filter(key => values[key] === "")
+         const updated = Object.keys(values).filter(key => key !== values[key]).filter(key => values[key] !== "")
 
-            resolve({
-               updated: {},
-               deleted: {}
-            })
-         }, 100))
+         return this.$http("affectedBy/update", {
+            params: {
+               property: propertyName,
+               updated: updated.join(),
+               deleted: deleted.join()
+            }
+         })
       },
-      affectedByDeletion(propertyName: string): Promise<number>{
-         return new Promise((resolve, reject) => setTimeout(() => {
-            // const affected = this.testProperties.find(property => property.name === propertyName)
-            // console.log("apiiing deletion of", propertyName, affected)
-
-            resolve(12)
-         }, 100))
+      affectedByDeletion(propertyName: string){
+         return this.$http("affectedBy/delete", {
+            params: {
+               property: propertyName
+            }
+         })
       },
       async processChanges(){
          this.modal.isProcessing = true
@@ -207,7 +210,15 @@ export default defineComponent({
 
                (this.$refs.newProperty as any).resetMe()
             } else if(this.operationData.type === enModalOperationType.update){
-               await this.requests().update()
+               const updatedProperty = await this.requests().update().then(res => res.data)
+
+               this.properties.splice(this.properties.findIndex((property: ifProperty) => property.name === updatedProperty.name), 1)
+               this.$nextTick(() => {
+                  this.properties.push({
+                     name: updatedProperty.name,
+                     values: updatedProperty.values
+                  })
+               })
             } else{
                await this.requests().delete()
                this.properties.splice(this.properties.findIndex((property: ifProperty) => property.name === propertyName), 1)
@@ -231,15 +242,26 @@ export default defineComponent({
                })
             },
             update: () => {
-               console.log("updating", this.operationData.updated)
-               return this.$http.patch("/properties", {
-                  name: this.operationData.propertyName,
-                  added: this.operationData.added,
-                  updated: this.operationData.updated,
-                  deleted: this.operationData.deleted
-               }, { headers: {
-                     "Content-Type": "application/json"
-                  }}
+               const updated = Object.keys(this.operationData.updated).reduce((previous, current) => ({
+                  ...previous,
+                  [current]: this.operationData.updated[current].newName
+               }), {})
+               const deleted = Object.keys(this.operationData.deleted)
+
+               const updateObject: any = {
+                  values: {}
+               }
+
+               if(this.operationData.added.length > 0) updateObject.values.added = this.operationData.added
+               if(Object.keys(updated).length > 0) updateObject.values.updated = updated
+               if(deleted.length > 0) updateObject.values.deleted = deleted
+               if(this.operationData.newName) updateObject.newName = this.operationData.newName
+
+               return this.$http.patch(`/properties/${ this.operationData.propertyName }`,
+                  updateObject,
+                  {
+                     headers: { "Content-Type": "application/json" }
+                  }
                )
             },
             delete: () => {
@@ -268,6 +290,9 @@ export default defineComponent({
             showError: this.error !== undefined,
             headerPrefix: `${ headerPrefix } property`
          }
+      },
+      isAffectedNumberPlural(){
+         return this.operationData.affectedByDelete ? this.operationData.affectedByDelete > 1 ? true : false : false
       }
    }
 })

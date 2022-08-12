@@ -1,13 +1,13 @@
 <template>
-   <div v-if="showClose" class="flex flex-col">
-      <Button @click="$emit('close')" :disabled="disable" :focusOnMounted="true">
+   <div v-if="showClose" class="flexCentered mt-4">
+      <Button @click="$emit('close')" :focusOnMounted="true" :disabled="disable">
          <span class="z-10 pointer-events-none">
             close
          </span>
       </Button>
    </div>
    <div v-else class="flexCentered flex-row mt-4 gap-2">
-      <Button @click="$emit('cancel')" :disabled="disable" :focusOnMounted="true">
+      <Button @click="$emit('cancel')" :focusOnMounted="true" :disabled="disable">
          <span class="z-10 pointer-events-none">
             cancel
          </span>

@@ -10,13 +10,13 @@
             <Header :showDefault="!isLoading && !showError" :showError="!isLoading && showError">
                <slot name="header" />
             </Header>
-            <section v-show="!isLoading" class="flex flex-col">
+            <section v-show="!isLoading" class="flex flex-col gap-3">
                <slot />
             </section>
             <div v-show="isLoading" class="overflow-hidden flex justify-center items-center flex-1">
                <Loading />
             </div>
-            <ControlButtons v-show="!isLoading" :showClose="showError" :disable="isLoading"
+            <ControlButtons v-if="!isLoading" :showClose="showError" :disable="isLoading"
                @close="close" @confirm="confirm" @cancel="cancel"
             />
          </article>
@@ -86,11 +86,12 @@ export default defineComponent({
 article{
    width: calc(100% - 4rem);
    max-width: calc(100% - 4rem);
-   max-height: calc(100% - 7rem);
+   max-height: calc(100% - 8rem);
 }
 @media (min-width: 768px){
    article{
       width: 40rem;
+      max-height: calc(100% - 12rem);
    }
 }
 </style>
