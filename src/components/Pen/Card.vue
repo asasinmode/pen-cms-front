@@ -1,16 +1,20 @@
 <template>
-   <div>
-
-   </div>
+   <article>
+      i'm a card
+      <button @click="$emit('editMe', $event)">edit</button>
+   </article>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
+import type { ifPen } from "@/typings/pen";
 
 export default defineComponent({
    name: "Card",
    props: {
-      
+      pen: {
+         type: Object as PropType<ifPen>
+      }
    }
 })
 </script>

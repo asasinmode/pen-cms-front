@@ -1,5 +1,5 @@
 <template>
-   <div class="bg-lilac-dark cursor-pointer hoverable min-w-[14.75rem] w-full hover:bg-lilac-dark/70 focus-visible:bg-lilac-dark/70 focus-within:!bg-lilac-dark/50"
+   <div class="bg-lilac-dark cursor-pointer min-w-[14.75rem] w-full hover:bg-lilac-dark/70 focus-visible:bg-lilac-dark/70 focus-within:!bg-lilac-dark/50"
       :class="{ '!bg-red-500/70': highlightRed }"
    >
       <slot />

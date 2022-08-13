@@ -16,7 +16,7 @@
             <div v-show="isLoading" class="overflow-hidden flex justify-center items-center flex-1">
                <Loading />
             </div>
-            <ControlButtons v-if="!isLoading" :showClose="showError" :disable="isLoading"
+            <ControlButtons v-if="!isLoading" :showClose="showError" :disable="isLoading" :focusButtons="focusButtons"
                @close="close" @confirm="confirm" @cancel="cancel"
             />
          </article>
@@ -45,6 +45,10 @@ export default defineComponent({
       showError: {
          type: Boolean,
          default: false
+      },
+      focusButtons: {
+         type: Boolean,
+         default: true
       }
    },
    emits: ["close", "confirm", "cancel"],
@@ -59,7 +63,7 @@ export default defineComponent({
          this.$emit("cancel")
       },
       handleTabNavigation(e: KeyboardEvent){
-         const focusables = this.$refs.contentContainer.querySelectorAll("button")
+         const focusables: NodeListOf<HTMLButtonElement | HTMLInputElement | HTMLSelectElement> = this.$refs.contentContainer.querySelectorAll("button,input,select")
          if(e.shiftKey && document.activeElement === focusables[0]){
             focusables[focusables.length - 1].focus()
             e.preventDefault()

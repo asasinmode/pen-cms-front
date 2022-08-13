@@ -11,7 +11,7 @@
             :isLoading="modal.isProcessing" :showError="modalComputed.showError"
             :closeFocusTarget="modal.closeFocusTarget"
          >
-            <template v-slot:header>
+            <template #header>
                {{ modalComputed.headerPrefix }} <span class="highlighted">{{ operationData.propertyName }}</span>
             </template>
             <template v-if="error === undefined" #default>
@@ -22,11 +22,11 @@
                   :deleted="operationData.deleted"
                />
                <h3 v-else-if="operationData.type === 'delete'" class="text-2xl text-center">
-                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} going to be affected
+                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} will be affected
                </h3>
             </template>
             <template v-else #default>
-               <ErrorMessage v-if="error !== undefined" :error="error" />
+               <ErrorMessage :error="error" />
             </template>
          </Modal>
       </template>

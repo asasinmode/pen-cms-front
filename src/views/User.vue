@@ -8,7 +8,7 @@
          />
          <FilledInput v-model="passwordInput.value" :id="`loginPassword`" :placeholder="'password'"
             :errorMessage="passwordInput.errorMessage" :showError="passwordInput.showErrorMessage"
-            @input="passwordInput.showErrorMessage = false" type="password"
+            @input="passwordInput.showErrorMessage = false" type="password" @keydown.enter="handleLogin"
          />
          <div class="flexCentered flex-row gap-4 text-lg flex-wrap">
             <Button @click="handleRegister" :disabled="isLoading">

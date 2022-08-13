@@ -67,11 +67,23 @@ export default defineComponent({
       showError: {
          type: Boolean,
          default: false
+      },
+      focusOnMounted: {
+         type: Boolean,
+         default: false
       }
+   },
+   mounted(){
+      this.focusOnMounted && this.focusMe()
    },
    methods: {
       inputHandler(event: Event){
          this.$emit('update:modelValue', (event.target as HTMLInputElement).value)
+      },
+      focusMe(){
+         this.$nextTick(() => {
+            this.$refs.inputElement.focus()   
+         })
       }
    },
    computed: {
