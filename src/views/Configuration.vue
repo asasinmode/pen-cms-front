@@ -139,8 +139,6 @@ export default defineComponent({
                } catch(e){
                   console.error(e)
                   this.error = e
-                  this.modal.isProcessing = false
-                  return
                }
 
                this.modal.isProcessing = false
@@ -156,8 +154,6 @@ export default defineComponent({
                   this.operationData.affectedCount = await this.getAffectedCount(name).then(res => res.data[name])
                } catch(e){
                   this.error = e
-                  this.modal.isProcessing = false
-                  return
                }
 
                this.modal.isProcessing = false

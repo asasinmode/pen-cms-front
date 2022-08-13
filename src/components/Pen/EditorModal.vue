@@ -6,7 +6,7 @@
       <template #header>
          {{ headerText }}
       </template>
-      <template v-if="error !== undefined" #default>
+      <template v-if="error === undefined" #default>
          <Editor :pen="pen" @updatePen="updatePenData" @imageInput="uploadNewImage" ref="editor" :availableProperties="availableProperties" />
       </template>
       <template v-else #default>
@@ -17,14 +17,17 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import { useUserStore } from "@/stores/userStore";
+import { mapState } from "pinia";
 import type { ifPen } from "@/typings/pen";
 import type { ifProperty } from "@/typings/configuration";
 import Modal from "@/components/Misc/Modal.vue";
 import Editor from "./EditorModal/Editor.vue"
+import ErrorMessage from "../Misc/ErrorMessage.vue";
 
 export default defineComponent({
    name: "EditorModal",
-   components: { Modal, Editor },
+   components: { Modal, Editor, ErrorMessage },
    props: {
       pen: {
          type: Object as PropType<ifPen>,
@@ -70,9 +73,8 @@ export default defineComponent({
          if(this.isNew){
             this.createPen()
             return
-         } else{
-            this.updatePen()
          }
+         this.updatePen()
       },
       updatePenData(pen: Partial<ifPen>){
          this.penData = pen
@@ -80,14 +82,80 @@ export default defineComponent({
       uploadNewImage(file: File | undefined = undefined){
          this.newImage = file
       },
-      createPen(){
-         console.log("creating pen")
+      async createPen(){
+         this.isLoading = true
+         console.log("starting creation")
+
+         try {
+            const saveResults = await this.$http.post("pens", this.presentableToApiPen(), {
+               headers: { "Authorization": `Bearer: ${ this.authToken }` }
+            })
+            console.log(saveResults)
+         } catch(e){
+            console.error(e)
+            this.error = e
+         } finally {
+            this.isLoading = false
+         }
+
+         console.log("finished creating")
       },
-      updatePen(){
-         console.log("updating pen")
+      async updatePen(){
+         this.isLoading = true
+         console.log("starting update")
+
+         try {
+            const saveResults = await this.$http.post("pens", this.presentableToApiPen(), {
+               headers: { "Authorization": `Bearer: ${ this.authToken }` }
+            })
+            console.log(saveResults)
+         } catch(e){
+            console.error(e)
+            this.error = e
+         } finally {
+            this.isLoading = false
+         }
+
+         console.log("finished updating")
+      },
+      presentableToApiPen(){
+         const rv = new FormData()
+
+         if(this.isNew){
+            rv.append("name", this.penData.name || "")
+            rv.append("properties", JSON.stringify(this.penData.properties))
+            if(this.newImage !== undefined){
+               rv.append("image", this.newImage)
+            }
+            return rv
+         }
+
+         if(this.pen.name !== this.penData.name){
+            rv.append("name", this.penData.name || "")
+         }
+         if(Object.keys(this.penData.properties || {}).length > 0){
+            let temp: any = {}
+            if(!this.pen.properties){
+               temp = this.penData.properties
+            } else{
+               Object.entries(this.penData).forEach((value, property) => {
+                  const currentValue = (this.penData.properties as Record<string, string>)[property]
+                  if(!currentValue || currentValue !== value as unknown as string){
+                     temp[property] = value
+                  }
+               })
+            }
+            rv.append("properties", JSON.stringify(temp))
+         }
+         if(this.newImage !== undefined){
+            rv.append("image", this.newImage)
+         }
+
+         return rv
       }
    },
    computed: {
+      ...mapState(useUserStore, ['authToken']),
       headerText(){
          return this.isNew ? `add new pen` : `edit pen`
       },

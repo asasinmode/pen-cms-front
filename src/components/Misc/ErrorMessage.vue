@@ -27,6 +27,7 @@ export default defineComponent({
          console.error(this.error)
          return
       }
+
       this.serverMessage = this.error.response?.data.message
    },
    computed: {
