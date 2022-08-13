@@ -22,7 +22,7 @@
                   :deleted="operationData.deleted"
                />
                <h3 v-else-if="operationData.type === 'delete'" class="text-2xl text-center">
-                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} are going to be affected
+                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} going to be affected
                </h3>
             </template>
             <template v-else #default>
@@ -38,6 +38,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapState } from "pinia";
+import { useUserStore } from "@/stores/userStore";
 import { enModalOperationType } from "@/typings/configuration";
 import type { ifOperationData, ifUpdatePropertyObject, ifCreatePropertyObject, ifValues, ifProperty } from "@/typings/configuration";
 import Property from "@/components/Configuration/Property.vue";
@@ -111,7 +113,6 @@ export default defineComponent({
                this.operationData.propertyName = propertyName
                if(newPropertyName !== propertyName){
                   this.operationData.newName = newPropertyName
-                  console.log("setting new name", this.operationData.newName)
                }
 
                try {
@@ -181,7 +182,7 @@ export default defineComponent({
          const deleted = Object.keys(values).filter(key => values[key] === "")
          const updated = Object.keys(values).filter(key => key !== values[key]).filter(key => values[key] !== "")
 
-         return this.$http("affectedBy/update", {
+         return this.$http.get("affectedBy/update", {
             params: {
                property: propertyName,
                updated: updated.join(),
@@ -190,7 +191,7 @@ export default defineComponent({
          })
       },
       getAffectedCount(propertyName: string){
-         return this.$http("affectedBy/delete", {
+         return this.$http.get("affectedBy/delete", {
             params: {
                property: propertyName
             }
@@ -239,7 +240,7 @@ export default defineComponent({
                   name: this.operationData.propertyName,
                   values: Object.values(this.operationData.added)
                }, {
-                  headers: { "Content-Type": "application/json" }
+                  headers: { "Authorization": `Bearer: ${ this.authToken }` }
                })
             },
             update: () => {
@@ -261,12 +262,14 @@ export default defineComponent({
                return this.$http.patch(`/properties/${ this.operationData.propertyName }`,
                   updateObject,
                   {
-                     headers: { "Content-Type": "application/json" }
+                     headers: { "Authorization": `Bearer: ${ this.authToken }` }
                   }
                )
             },
             delete: () => {
-               return this.$http.delete(`/properties/${ this.operationData.propertyName }`)
+               return this.$http.delete(`/properties/${ this.operationData.propertyName }`, {
+                  headers: { "Authorization": `Bearer: ${ this.authToken }` }
+               })
             }
          }
       },
@@ -280,6 +283,7 @@ export default defineComponent({
       }
    },
    computed: {
+      ...mapState(useUserStore, ['authToken']),
       modalComputed(){
          const headerPrefix = this.operationData.type === enModalOperationType.add ?
             "adding new"

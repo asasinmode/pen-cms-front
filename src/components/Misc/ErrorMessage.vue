@@ -1,9 +1,12 @@
 <template>
-   <p v-if="isAxiosError" class="text-center text-red-700 font-semibold">{{ serverMessage }}</p>
+   <p v-if="showLoginMessage">{{ isLoggedIn ? 'relog and try again' : 'login to modify this resource' }}</p>
+   <p v-else-if="isAxiosError">{{ serverMessage }}</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapState } from "pinia";
+import { useUserStore } from "@/stores/userStore";
 import axios from "axios"
 
 export default defineComponent({
@@ -27,13 +30,19 @@ export default defineComponent({
       this.serverMessage = this.error.response?.data.message
    },
    computed: {
+      ...mapState(useUserStore, ['isLoggedIn']),
       isAxiosError(){
          return axios.isAxiosError(this.error)
+      },
+      showLoginMessage(){
+         return this.isAxiosError && this.error.response?.data.message === 'not authorized'
       }
    }
 })
 </script>
 
 <style scoped>
-
+p {
+   @apply text-center text-red-700 font-semibold
+}
 </style>

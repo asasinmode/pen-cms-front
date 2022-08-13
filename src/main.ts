@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import './styles/index.css'
@@ -13,11 +14,11 @@ const httpClient = axios.create({
 
 const app = createApp(App)
 
-app.config.globalProperties.$http = httpClient
-app.config.globalProperties.$shake = shake
-
+app.use(router)
+app.use(createPinia())
 app.component("FontAwesomeIcon", FontAwesomeIcon)
 
-app.use(router)
+app.config.globalProperties.$http = httpClient
+app.config.globalProperties.$shake = shake
 
 app.mount('body')

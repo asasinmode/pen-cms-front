@@ -9,18 +9,20 @@
       }"
    >
       <input :id="`${ id }Input`" :type="type" placeholder=" " :value="modelValue" @input="inputHandler" :pattern="pattern.source" ref="inputElement" v-bind="$attrs"
-         class="bg-transparent w-full h-full pl-4 pr-3 pt-2 peer border-b-[1px] border-black/40 hover:border-black focus:border-black"
+         class="bg-transparent w-full h-full pl-4 pr-3 pt-2 peer border-b-[1px]
+            border-black/40 hover:border-black focus:border-black"
          :class="{ '!border-red-700': isInvalid }"
       >
-      <label :for="`${ id }Input`" class="absolute left-4 top-4 origin-top-left pointer-events-none text-black/50 peer-focus:text-navy-dark"
+      <label :for="`${ id }Input`" class="absolute left-4 top-4 origin-top-left pointer-events-none
+      text-black/50 peer-focus:text-navy-dark"
          :class="{ '!text-red-700': isInvalid }"
       >
          {{ placeholder }}
       </label>
-      <span v-show="!isInvalid" class="flex pointer-events-none text-black/50 text-[0.75em] absolute left-4 bottom-0 translate-y-full">
+      <span v-show="!isInvalid" class="flex pointer-events-none text-[0.75em] absolute left-4 bottom-0 translate-y-full text-black/50">
          {{ helperMessage }}
       </span>
-      <span v-show="isInvalid" class="flex pointer-events-none text-red-700 text-[0.75em] absolute left-4 bottom-0 translate-y-full">
+      <span v-show="isInvalid" class="flex pointer-events-none text-[0.75em] absolute left-4 bottom-0 translate-y-full text-red-700">
          {{ errorMessage }}
       </span>
    </div>

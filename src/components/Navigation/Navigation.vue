@@ -48,7 +48,8 @@ export default defineComponent({
          icons: {
             dashboard: "house",
             configuration: "wrench",
-            browse: "pen-clip"
+            browse: "pen-clip",
+            login: "user"
          },
          isExpanded: false,
       };

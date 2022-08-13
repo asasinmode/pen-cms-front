@@ -13,8 +13,8 @@
       </h3>
       <table class="w-full">
          <tr>
-            <th class="w-1/5 max-w-[20%]">old name</th>
-            <th class="w-3/5 max-w-[60%]">new name</th>
+            <th class="w-2/5 max-w-[40%]">old name</th>
+            <th class="w-2/5 max-w-[40%]">new name</th>
             <th class="w-1/5 max-w-[20%]">affected count</th>
          </tr>
          <Value v-for="(value, key) in updated" :key="key" :name="key" :value="value" :hasAffectedCount="true" :hasNewName="true" />
