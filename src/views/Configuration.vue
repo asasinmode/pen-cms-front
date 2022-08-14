@@ -1,9 +1,10 @@
 <template>
    <main class="flex flex-col">
       <template v-if="!isLoading">
-         <Property v-for="property in properties" :key="property.name" @expandMe="expandProperty"
-         :selectedProperty="selectedProperty" :name="property.name" :values="property.values"
-         @updateMe="emitHandlers().update(property.name, $event)" @deleteMe="emitHandlers().delete(property.name, $event)"
+         <Property v-for="(property, index) in properties" :key="property.name" @expandMe="expandProperty"
+            :selectedProperty="selectedProperty" :name="property.name" :values="property.values"
+            @updateMe="emitHandlers().update(property.name, $event)" @deleteMe="emitHandlers().delete(property.name, $event)"
+            :isSkipTarget="index === 0"
          />
          <Property :selectedProperty="selectedProperty" :name="'new'" @expandMe="expandProperty" @createMe="emitHandlers().create" ref="newProperty" />
          <Modal v-if="modal.show"
@@ -116,11 +117,20 @@ export default defineComponent({
                }
 
                try {
-                  const changedValues = this.filterChangedValues(oldValues)
-                  const { updated: numberOfAffectedByUpdate, deleted: numberOfAffectedByDelete } = await this.affectedByUpdate(propertyName, changedValues).then(res => res.data)
-                  this.operationData.affectedCount = await this.getAffectedCount(propertyName).then(res => res.data[propertyName])
-
                   this.operationData.added = newValues
+
+                  const changedValues = this.filterChangedValues(oldValues)
+                  const updatedKeys = Object.keys(changedValues).filter(key => key !== changedValues[key]).filter(key => changedValues[key] !== "")
+                  const deletedKeys = Object.keys(changedValues).filter(key => changedValues[key] === "")
+
+                  // make requests only if need be
+                  if(this.operationData.newName){
+                     this.operationData.affectedCount = await this.getAffectedCount(propertyName).then(res => res.data[propertyName])
+                  }
+                  if(updatedKeys.length === 0 && deletedKeys.length === 0){ return }
+
+                  const { updated: numberOfAffectedByUpdate, deleted: numberOfAffectedByDelete } = await this.affectedByUpdate(propertyName, updatedKeys.join(), deletedKeys.join()).then(res => res.data)
+
                   this.operationData.updated = numberOfAffectedByUpdate ?
                      Object.keys(numberOfAffectedByUpdate).reduce((previous, current) => ({
                         ...previous,
@@ -139,9 +149,9 @@ export default defineComponent({
                } catch(e){
                   console.error(e)
                   this.error = e
+               } finally {
+                  this.modal.isProcessing = false
                }
-
-               this.modal.isProcessing = false
             },
             delete: async (name: string, closeFocusTarget: HTMLButtonElement) => {
                this.modal.isProcessing = true
@@ -174,15 +184,12 @@ export default defineComponent({
             }
          }
       },
-      affectedByUpdate(propertyName: string, values: ifValues){
-         const deleted = Object.keys(values).filter(key => values[key] === "")
-         const updated = Object.keys(values).filter(key => key !== values[key]).filter(key => values[key] !== "")
-
+      affectedByUpdate(propertyName: string, updated: string, deleted: string){
          return this.$http.get("affectedBy/update", {
             params: {
                property: propertyName,
-               updated: updated.join(),
-               deleted: deleted.join()
+               updated: updated,
+               deleted: deleted
             }
          })
       },

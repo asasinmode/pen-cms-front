@@ -8,12 +8,12 @@
          'after:bg-red-700': isInvalid
       }"
    >
-      <input :id="`${ id }Input`" :type="type" placeholder=" " :value="modelValue" @input="inputHandler" :pattern="pattern.source" ref="inputElement" v-bind="$attrs"
+      <input :id="id" :type="type" placeholder=" " :value="modelValue" @input="inputHandler" :pattern="pattern.source" ref="inputElement" v-bind="$attrs"
          class="bg-transparent w-full h-full pl-4 pr-3 pt-2 peer border-b-[1px]
             border-black/40 hover:border-black focus:border-black"
          :class="{ '!border-red-700': isInvalid }"
       >
-      <label :for="`${ id }Input`" class="absolute left-4 top-4 origin-top-left pointer-events-none
+      <label :for="id" class="absolute left-4 top-4 origin-top-left pointer-events-none
       text-black/50 peer-focus:text-navy-dark"
          :class="{ '!text-red-700': isInvalid }"
       >

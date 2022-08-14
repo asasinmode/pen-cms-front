@@ -2,9 +2,7 @@
    <div class="flex flex-row gap-1 bg-navy-light rounded-md p-1 w-[15.25rem]">
       <div class="bg-lilac-dark flex-1 hover:bg-lilac-dark/70 focus-within:bg-lilac-dark/70">
          <select class="w-full h-full p-2 bg-transparent cursor-pointer" v-model="selectedValue">
-            <option v-for="(value, index) in values" :key="`newPropertyOption${ value }`"
-               :value="value"
-            >
+            <option v-for="value in values" :key="`newPropertyOption${ value }`" :value="value">
                {{ value }}
             </option>
          </select>

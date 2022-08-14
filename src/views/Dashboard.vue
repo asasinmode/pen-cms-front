@@ -2,7 +2,7 @@
    <main class="flex flex-row flex-wrap p-4 gap-4 content-start">
       <template v-if="!isLoading">
          <article class="flexCentered w-[15.25rem]">
-            <button @click="openEditor('new', $event)" ref="newButton" class="hoverable w-full h-full">
+            <button id="skipTarget" @click="openEditor('new', $event)" ref="newButton" class="hoverable w-full h-full">
                <FontAwesomeIcon icon="fa-solid fa-plus" class="pointer-events-none" size="3x" />
             </button>
          </article>

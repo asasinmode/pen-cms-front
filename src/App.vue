@@ -1,6 +1,6 @@
 <template>
    <Navigation />
-   <RouterView class="flex-1 overflow-x-hidden overflow-y-auto z-0" />
+   <RouterView class="overflow-x-hidden overflow-y-auto z-0 flex-1" />
 </template>
 
 <script lang="ts">

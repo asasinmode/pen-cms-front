@@ -2,7 +2,7 @@
    <main class="flex flex-col items-center">
       <article v-if="!isLoggedIn">
          <h1>login</h1>
-         <FilledInput v-model="usernameInput.value" :id="`loginUsername`" :placeholder="'username'"
+         <FilledInput v-model="usernameInput.value" :id="'skipTarget'" :placeholder="'username'"
             :errorMessage="usernameInput.errorMessage" :showError="usernameInput.showErrorMessage"
             @input="usernameInput.showErrorMessage = false"
          />
@@ -23,18 +23,18 @@
             </Button>
          </div>
          <h3 v-if="isErrorInvalidCredentials" class="text-xl text-red-700">
-            invalid credentials
+            {{ requestError.response.data.message }}
          </h3>
       </article>
       <article v-else>
          <h1>logged in as <span class="block md:hidden"></span>{{ username }}</h1>
          <div class="flex flex-row gap-4 text-lg flex-wrap">
-            <Button @click="deleteUser" :disabled="isLoading" class="w-44">
+            <Button id="skipTarget" @click="deleteUser" :disabled="isLoading" class="w-52">
                <span class="z-10 pointer-events-none">
                   delete account
                </span>
             </Button>
-            <Button @click="logout" :disabled="isLoading" class="w-44">
+            <Button @click="logout" :disabled="isLoading" class="w-52">
                <span class="z-10 pointer-events-none">
                   logout
                </span>
@@ -112,6 +112,7 @@ export default defineComponent({
             this.login(name, token)
          } catch(err){
             this.requestError = err
+            console.log(err)
             this.$shake(button)
             return
          } finally{

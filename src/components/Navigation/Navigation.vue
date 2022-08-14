@@ -3,7 +3,7 @@
       @keydown.tab="handleTabNavigation" ref="nav"
    >
       <a href="#skipTarget" class="flex flex-row items-center text-lg darkHoverable justify-center h-[4.5rem] w-[4.5rem] p-2
-         peer -translate-y-full focus-visible:translate-y-0" @focus="expandMenuWhenFocused" ref="skipLink"
+         peer -translate-y-full focus-visible:translate-y-0" @focus="expandMenuWhenFocused" ref="skipLink" @keydown.prevent.enter="focusSkipTarget" @click="focusSkipTarget"
       >
          skip to content
       </a>
@@ -71,7 +71,7 @@ export default defineComponent({
       },
       handleTabNavigation(e: KeyboardEvent){
          if(window.innerWidth > 768){ return }
-         this.isExpanded = true
+
          if(document.activeElement === this.$refs.skipLink && e.shiftKey){ // close when shift tabbing from skip link
             this.isExpanded = false
             return
@@ -81,12 +81,16 @@ export default defineComponent({
             this.isExpanded = false
             return
          }
+         this.isExpanded = true
       },
       expandMenuWhenFocused(e: FocusEvent){  // expands menu when element is focused from outside
          if(e.relatedTarget !== this.lastLink && e.relatedTarget !== this.firstButton){
             if(window.innerWidth > 768 && e.target === this.lastLink){ return }  // don't open if focusing last link from outside on desktop
             this.isExpanded = true
          }
+      },
+      focusSkipTarget(){
+         (document.querySelector("#skipTarget") as any)?.focus()
       }
    },
    computed: {
@@ -94,7 +98,7 @@ export default defineComponent({
          return this.$router.getRoutes().map(route => ({ path: route.path, name: route.name as string }));
       },
       lastLink(){
-         return this.$refs.nav.querySelector("a[href='/browse']") as HTMLLinkElement
+         return this.$refs.nav.querySelector("a[href='/user']") as HTMLLinkElement
       },
       firstButton(){
          return this.$refs.nav.querySelector(".toggleButton") as HTMLButtonElement

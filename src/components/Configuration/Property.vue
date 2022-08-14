@@ -2,7 +2,7 @@
    <article class="relative" :class="{ 'bg-lilac-dark': isSelected,
       'after:absolute after:bottom-0 after:w-full after:h-1 after:pointer-events-none after:bg-lilac-dark/100': !isNew }"
    >
-      <ExpandButton @click="$emit('expandMe', name)" :title="name" :disabled="isSelected" />
+      <ExpandButton @click="$emit('expandMe', name)" :title="name" :disabled="isSelected" :id="isSkipTarget ? 'skipTarget' : undefined" />
       <div v-show="isSelected" class="flexCentered flex-col md:justify-start p-4 pb-6 gap-4">
          <FilledInput v-model="nameInput.value" :id="`property${ name }`" :placeholder="'name'"
             :errorMessage="nameInput.errorMessage" :showError="nameInput.showErrorMessage" :length="15.25"
@@ -52,6 +52,10 @@ export default defineComponent({
       values: {
          type: Array as PropType<Array<string>>,
          default: []
+      },
+      isSkipTarget: {
+         type: Boolean,
+         default: false
       }
    },
    data(){
