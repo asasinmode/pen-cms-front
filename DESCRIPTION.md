@@ -39,9 +39,9 @@ Na swoje usprawiedliwienie lubię opowiadać o moim procesie tworzenia i chciał
 | --------------- | ------------------------------  |
 | front end       | [<img alt="vue" src="https://img.shields.io/badge/-Vue.js-/?style=flat-square&logo=vue.js&logoColor=4FC08D&color=333333">](https://vuejs.org/) [<img alt="tailwindcss" src="https://img.shields.io/badge/-tailwindcss-/?style=flat-square&logo=tailwindcss&logoColor=646CFF&color=333333">](https://tailwindcss.com/) [<img alt="font awesome" src="https://img.shields.io/badge/-Font_Awesome-/?style=flat-square&logo=fontawesome&logoColor=528DD7&color=333333">](https://fontawesome.com/) |
 | back end        | [<img alt="node" src="https://img.shields.io/badge/-Node.js-/?style=flat-square&logo=node.js&logoColor=339933&color=333333">](https://nodejs.org/) [<img alt="express" src="https://img.shields.io/badge/-Express-/?style=flat-square&logo=express&logoColor=ffffff&color=333333">](https://expressjs.com/) |
-| baza danych     | [<img alt="mongodb" src="https://img.shields.io/badge/-MongoDB-/?style=flat-square&logo=mongodb&logoColor=47A248&color=333333">](https://www.mongodb.com/)|
+| baza danych     | [<img alt="mongodb" src="https://img.shields.io/badge/-MongoDB-/?style=flat-square&logo=mongodb&logoColor=47A248&color=333333">](https://www.mongodb.com/) [<img alt="cloudinary" src="https://img.shields.io/badge/-Cloudinary-/?style=flat-square&logoColor=47A248&color=333333">](https://cloudinary.com//)|
 | opis projektu   | [<img alt="markdown" src="https://img.shields.io/badge/-markdown-/?style=flat-square&logo=markdown&logoColor=ffffff&color=333333">](https://www.markdownguide.org/)|
-| hosting         | *tbd*                               |
+| hosting         | [<img alt="netlify" src="https://img.shields.io/badge/-netlify-/?style=flat-square&logo=netlify&logoColor=00C7B7&color=333333">](https://www.netlify.com/) [<img alt="heroku" src="https://img.shields.io/badge/-heroku-/?style=flat-square&logo=heroku&logoColor=430098&color=eeeeee">](https://www.heroku.com/) |
 
 ### Uzasadnienie wyborów
 
@@ -53,15 +53,19 @@ Biorąc pod uwagę luźnie narzucone odgórne wymagania co do użytych technolog
    - express - biorąc pod uwagę limit czasu na wykonanie projektu, zdecydowanie przyśpiesza tworzenie API od zera.
  - **mongodb** - pomimo niesprecyzowanej potrzeby na bazę danych, z założeń projektu wynika potrzeba takowej. Struktura MongoDB ułatwia pracę z nią w Javascriptcie a [MongoDB Atlas](https://www.mongodb.com/atlas/) oferuje darmowy hosting.
  - **markdown** - podoba mi się wygląd tekstu sformatowanego w tym języku i chciałem podjąć się utworzenia w nim całego opisu.
-  - **hosting** - firebase?
+  - **cloudinary** - moim zdaniem cms zazwyczaj narzuca potrzebę przechowywania obrazów. Dodatkowo większość serwisów hostingowych w swojej darmowej ofercie w najlepszym przypadku oferuje tymczasowy dostęp do plików, które są resetowane przy restarcie aplikacji.
+  - **hosting**
+    - **heroku** - oferuje tymczasowy dostęp do plików, którego potrzebuje moje api żeby odczytać wysłany przez front plik i wysłać go do cloudinary.
+    - **netlify** - bardzo wygodna integracja z popularnymi frameworkami, w tym Vue.
 
 # Front end
 
-Z uwagi na założenia projektu na front end składać będą się 3 strony.
+Z uwagi na założenia projektu na front end składać będą się 4 strony.
 
  - **dashboard** - ekran główny gdzie można dodawać, usuwać i edytować długopisy.
  - **manage** - panel zawierający "konfigurację" długopisów, czyli przykładowo dodawanie nowych końcówek, kolorów, które później można wybierać przy tworzeniu/edytowaniu długopisów.
  - **browse** - dedykowana podstrona służąca do przeglądania dodanych długopisów.
+ - **login** - podstrona dedykowana do logowania, wylogowywania i usuwania konta zalogowanego użytkownika
 
 Dodatkowo osobiście w moich projektach zależy mi na w pełni funkcjonalnej nawigacji klawiaturą oraz responsywności co narzuca pewne wymagania na strukturę strony i kolejność elementów.
 
@@ -81,7 +85,7 @@ Nawigacja zawiera kolejno:
 
 1. Link pomijający nawigację
 2. Guzik rozwijający/zwijający menu. Guzik zawiera mini logo oraz ikonkę wskazującą na obecny stan menu.
-3. Link do podstrona
+3. Linki do podstron
 4. Guzik widoczny jedynie na mobilnych urządzeniach otwierający/zamykający menu
 
 Powyższa struktura sprawia, że pierwsza rzecz do jakiej nawiguje się klawiaturą to link pomijający nawigację. Po przejściu przez całe menu, zależnie od urządzenia, albo trafia się na kolejny element strony, na której jesteśmy, albo na guzik pozwalający na zamknięcie menu.
