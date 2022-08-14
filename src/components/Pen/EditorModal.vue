@@ -1,7 +1,7 @@
 <template>
    <Modal @confirm="handleConfirm" @close="$emit('close')" @cancel="$emit('close')"
       :isLoading="isLoading" :showError="error !== undefined"
-      :closeFocusTarget="closeFocusTarget" :focusButtons="false"
+      :closeFocusTarget="closeFocusTarget"
    >
       <template #header>
          {{ headerText }}
@@ -50,6 +50,7 @@ export default defineComponent({
          newImage: <File | undefined> undefined,
       }
    },
+   emits: ['addPen', 'patchPen', 'close', 'cancel', 'close'],
    mounted(){
       if(this.pen._id !== 'new'){
          this.penData = this.pen
@@ -84,46 +85,42 @@ export default defineComponent({
       },
       async createPen(){
          this.isLoading = true
-         console.log("starting creation")
 
          try {
             const saveResults = await this.$http.post("pens", this.presentableToApiPen(), {
                headers: { "Authorization": `Bearer: ${ this.authToken }` }
-            })
-            console.log(saveResults)
+            }).then(res => res.data)
+            this.$emit('addPen', saveResults)
          } catch(e){
-            console.error(e)
             this.error = e
+            return
          } finally {
             this.isLoading = false
          }
 
-         console.log("finished creating")
+         this.$emit('close')
       },
       async updatePen(){
          this.isLoading = true
-         console.log("starting update")
 
          try {
-            const saveResults = await this.$http.post("pens", this.presentableToApiPen(), {
-               headers: { "Authorization": `Bearer: ${ this.authToken }` }
-            })
-            console.log(saveResults)
+            const saveResults = await this.$http.patch(`pens/${ this.pen._id }`, this.presentableToApiPen()).then(res => res.data)
+            this.$emit('patchPen', saveResults)
          } catch(e){
-            console.error(e)
             this.error = e
+            return
          } finally {
             this.isLoading = false
          }
 
-         console.log("finished updating")
+         this.$emit('close')
       },
       presentableToApiPen(){
          const rv = new FormData()
 
          if(this.isNew){
             rv.append("name", this.penData.name || "")
-            rv.append("properties", JSON.stringify(this.penData.properties))
+            rv.append("properties", JSON.stringify(this.nullifiedUndefineds(this.penData.properties)))
             if(this.newImage !== undefined){
                rv.append("image", this.newImage)
             }
@@ -134,24 +131,20 @@ export default defineComponent({
             rv.append("name", this.penData.name || "")
          }
          if(Object.keys(this.penData.properties || {}).length > 0){
-            let temp: any = {}
-            if(!this.pen.properties){
-               temp = this.penData.properties
-            } else{
-               Object.entries(this.penData).forEach((value, property) => {
-                  const currentValue = (this.penData.properties as Record<string, string>)[property]
-                  if(!currentValue || currentValue !== value as unknown as string){
-                     temp[property] = value
-                  }
-               })
-            }
-            rv.append("properties", JSON.stringify(temp))
+            rv.append("properties", JSON.stringify(this.nullifiedUndefineds(this.penData.properties)))
          }
          if(this.newImage !== undefined){
             rv.append("image", this.newImage)
          }
 
          return rv
+      },
+      nullifiedUndefineds(objectToNullify: any){
+         if(!objectToNullify){ return {} }
+         return Object.keys(objectToNullify).reduce((previous, current) => ({
+            ...previous,
+            [current]: objectToNullify[current] || null
+         }), {})
       }
    },
    computed: {

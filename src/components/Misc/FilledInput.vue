@@ -1,6 +1,6 @@
 <template>
    <div :style="`width: ${ length }rem`" class="flex h-14 rounded-t-[4px] relative
-      bg-black/10 hover:bg-black/[0.125] focus-within:!bg-black/[0.175]
+      bg-navy-dark/10 hover:bg-navy-dark/[0.125] focus-within:!bg-navy-dark/[0.175]
       after:absolute after:left-1/2 after:right-1/2 after:bottom-0 after:h-[2px] focus-within:after:left-0 focus-within:after:right-0
       after:bg-navy-dark"
       :class="{

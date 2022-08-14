@@ -3,7 +3,7 @@
       <div class="w-full md:w-1/2 flexCentered flex-col gap-1">
          <FilledInput v-model="nameInput.value" :id="`penName`" :placeholder="'name'"
             :errorMessage="nameInput.errorMessage" :showError="nameInput.showErrorMessage" :length="15.25"
-            @input="nameInput.showErrorMessage = false" :focusOnMounted="true"
+            @input="nameInput.showErrorMessage = false"
          />
          <NewPropertySelect v-if="computedAvailableProperties.length > 0" :values="computedAvailableProperties"
             @addNew="addNewPropertyValue" ref="newPropertySelect"
@@ -11,7 +11,7 @@
       </div>
       <div class="w-[15.25rem] md:w-1/2 flex flex-col">
          <div v-if="showImage" class="w-full mb-2 flexCentered">
-            <img :src="imageSrc" class="shadow-md shadow-black/80 rounded-md max-w-full max-h-[15rem]" title="pen image preview" alt="pen image preview" />
+            <img :src="imageSrc" class="shadow-md shadow-black/80 rounded-md max-w-full max-h-[15rem]" title="pen image preview" alt="pen image preview">
          </div>
          <FileInput :id="'penImage'" :acceptedTypes="imageInput.acceptedTypes" @input="handleImageInput"
             :helperMessage="imageInput.helperMessage" :errorMessage="imageInput.errorMessage"

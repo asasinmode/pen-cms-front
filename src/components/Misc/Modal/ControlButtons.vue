@@ -7,7 +7,7 @@
       </Button>
    </div>
    <div v-else class="flexCentered flex-row mt-4 gap-2">
-      <Button @click="$emit('cancel')" :focusOnMounted="focusButtons" :disabled="disable" id="modalCancelButton">
+      <Button @click="$emit('cancel')" :focusOnMounted="true" :disabled="disable" id="modalCancelButton">
          <span class="z-10 pointer-events-none">
             cancel
          </span>
@@ -35,10 +35,6 @@ export default defineComponent({
       disable: {
          type: Boolean,
          default: false
-      },
-      focusButtons: {
-         type: Boolean,
-         default: true
       }
    }
 })

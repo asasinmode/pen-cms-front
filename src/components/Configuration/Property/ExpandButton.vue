@@ -1,5 +1,5 @@
 <template>
-   <button class="h-14 hoverable flexCentered w-full">
+   <button class="h-14 hoverable flexCentered w-full focus-visible:z-10">
       <span class="z-10 pointer-events-none" v-if="title === 'new'">
          <FontAwesomeIcon icon="fa-solid fa-plus" size="2xl" class="font-bold" />
       </span>

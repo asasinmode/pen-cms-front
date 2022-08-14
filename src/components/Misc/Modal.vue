@@ -16,7 +16,7 @@
             <div v-show="isLoading" class="overflow-hidden flex justify-center items-center flex-1">
                <Loading />
             </div>
-            <ControlButtons v-if="!isLoading" :showClose="showError" :disable="isLoading" :focusButtons="focusButtons"
+            <ControlButtons v-if="!isLoading" :showClose="showError" :disable="isLoading"
                @close="close" @confirm="confirm" @cancel="cancel"
             />
          </article>
@@ -45,10 +45,6 @@ export default defineComponent({
       showError: {
          type: Boolean,
          default: false
-      },
-      focusButtons: {
-         type: Boolean,
-         default: true
       }
    },
    emits: ["close", "confirm", "cancel"],
@@ -69,7 +65,7 @@ export default defineComponent({
             e.preventDefault()
             return
          }
-         if(document.activeElement === focusables[focusables.length - 1]){
+         if(!e.shiftKey && document.activeElement === focusables[focusables.length - 1]){
             focusables[0].focus()
             e.preventDefault()
             return

@@ -9,7 +9,8 @@ import FontAwesomeIcon from "./plugins/fontawesome"
 import shake from './plugins/shake'
 
 const httpClient = axios.create({
-   baseURL: 'http://localhost:8000/'
+   // baseURL: 'http://localhost:8000/'
+   baseURL: 'http://192.168.0.103:8000/'
 })
 
 const app = createApp(App)

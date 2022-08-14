@@ -1,14 +1,14 @@
 <template>
    <div class="flex w-full h-14 relative" :class="{'!mb-5': helperMessage.length || errorMessage.length}">
       <Button @click="clickInput" title="upload file" @drop.prevent="handleDrop" @dragover.prevent="isDraggedOver = true" @dragleave="isDraggedOver = false"
-         class="pt-0 pb-0 border-dashed border-2 border-black/30 rounded flex-1 !bg-black/10 hover:!bg-black/[0.125] focus:!bg-black/[0.125]"
+         class="pt-0 pb-0 border-dashed border-2 border-navy-dark/50 rounded flex-1 !bg-navy-dark/10 hover:!bg-navy-dark/[0.15] focus:!bg-navy-dark/[0.15]"
          :class="{ 'border-red-700': isInvalid }"
       >
          <label v-show="!isDraggedOver" :for="`${ id }FileInput`" class="w-full h-full flex flex-row items-center justify-between z-10 pointer-events-none" >
             <input ref="fileInput" :id="`${ id }FileInput`" :multiple="isMultiple" type="file" @input="handleInput" :accept="acceptedTypesString" class="w-[12rem]" tabindex="-1" />
-            <FontAwesomeIcon icon="upload" size="lg" class="text-black/30" :class="{ '!text-red-700': isInvalid }" />
+            <FontAwesomeIcon icon="upload" size="lg" class="text-navy-dark/50" :class="{ '!text-red-700': isInvalid }" />
          </label>
-         <FontAwesomeIcon v-show="isDraggedOver" icon="plus" size="lg" class="mt-[2px] text-black/30 pointer-events-none" />
+         <FontAwesomeIcon v-show="isDraggedOver" icon="plus" size="lg" class="mt-[2px] text-navy-dark/50 pointer-events-none" />
       </Button>
       <span v-show="!isInvalid" class="pointer-events-none text-black/50 text-[0.75em] absolute left-4 bottom-0 translate-y-full">
          {{ helperMessage }}
