@@ -1,7 +1,9 @@
 <template>
    <main class="flex flex-col items-center">
-      <article v-if="!isLoggedIn">
-         <h1>login</h1>
+      <article v-if="!isLoggedIn" class="flexCentered">
+         <h1 class="highlighted">
+            login
+         </h1>
          <FilledInput v-model="usernameInput.value" :id="'skipTarget'" :placeholder="'username'"
             :errorMessage="usernameInput.errorMessage" :showError="usernameInput.showErrorMessage"
             @input="usernameInput.showErrorMessage = false"
@@ -26,8 +28,10 @@
             {{ requestError.response.data.message }}
          </h3>
       </article>
-      <article v-else>
-         <h1>logged in as <span class="block md:hidden"></span>{{ username }}</h1>
+      <article v-else class="flexCentered">
+         <h1 class="highlighted">
+            logged in as <span class="block md:hidden"></span>{{ username }}
+         </h1>
          <div class="flex flex-row gap-4 text-lg flex-wrap">
             <Button id="skipTarget" @click="deleteUser" :disabled="isLoading" class="w-52">
                <span class="z-10 pointer-events-none">
@@ -175,10 +179,10 @@ export default defineComponent({
 
 <style scoped>
 article{
-   @apply rounded-md flex flex-col mt-40 md:mt-60 gap-2 flexCentered
+   @apply rounded-md flex flex-col mt-40 md:mt-60 gap-2
 }
 h1{
-   @apply text-5xl text-center highlighted mb-4
+   @apply text-5xl text-center mb-4
 }
 @media (max-height: 32rem) {
    article{

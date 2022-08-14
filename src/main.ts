@@ -9,7 +9,7 @@ import FontAwesomeIcon from "./plugins/fontawesome"
 import shake from './plugins/shake'
 
 const httpClient = axios.create({
-   baseURL: 'https://pen-cms-back.herokuapp.com/'
+   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/'
 })
 
 const app = createApp(App)

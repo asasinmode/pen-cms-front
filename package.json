@@ -1,6 +1,8 @@
 {
-   "name": "rekrutacja-cms-front",
-   "version": "0.0.0",
+   "name": "pen-cms-front",
+   "version": "1.0.0",
+   "author": "asasinmode",
+   "description": "vue 3 admin and client site for pen-cms",
    "scripts": {
       "dev": "vite --host",
       "build": "run-p type-check build-only",
