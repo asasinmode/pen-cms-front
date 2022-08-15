@@ -1,5 +1,5 @@
 <template>
-   <main class="flex flex-col w-full gap-2 pb-4" tabindex="-1">
+   <main class="flex flex-col w-full gap-2" tabindex="-1">
       <template v-if="!isLoading">
          <div class="w-full min-h-[6rem] flexCentered">
             <input id="skipTarget" v-model="searchFilter" placeholder="search..."
@@ -7,7 +7,8 @@
                hover:bg-lilac-dark/40 focus:bg-lilac-dark/70"
             >
          </div>
-         <ListItem v-for="pen in filteredPens" :key="pen._id" :pen="pen" />
+         <ListItem v-for="pen in slicedPens" :key="pen._id" :pen="pen" />
+         <Controls :totalNumberOfPages="totalNumberOfPages" :currentPage="currentPage" @moveTo="moveTo" />
       </template>
       <Loading v-else class="w-full h-full" />
    </main>
@@ -18,15 +19,18 @@ import { defineComponent } from "vue";
 import type { ifPen } from "@/typings/pen";
 import ListItem from "@/components/Browse/ListItem.vue";
 import Loading from "@/components/Misc/Loading.vue";
+import Controls from "../components/Browse/Controls.vue";
 
 export default defineComponent({
    name: "Browse",
-   components: { ListItem, Loading },
+   components: { ListItem, Loading, Controls },
    data() {
       return {
          pens: <ifPen[]>[],
          isLoading: false,
-         searchFilter: ""
+         searchFilter: "",
+         displayedPerPage: 1,
+         currentPage: 1
       };
    },
    mounted(){
@@ -37,6 +41,10 @@ export default defineComponent({
          this.isLoading = true
          this.pens = await this.$http.get("pens").then(res => res.data)
          this.isLoading = false
+      },
+      moveTo(page: number){
+         console.log("moving to page", page)
+         this.currentPage = page
       }
    },
    computed: {
@@ -70,6 +78,14 @@ export default defineComponent({
          }).map(textPen => textPen.id)
 
          return this.pens.filter(pen => foundIndexes.includes(pen._id))
+      },
+      totalNumberOfPages(){
+         return Math.ceil(this.filteredPens.length / this.displayedPerPage)
+      },
+      slicedPens(){
+         const start = (this.currentPage - 1) * this.displayedPerPage
+         const end = start + this.displayedPerPage
+         return this.filteredPens.slice(start, end)
       }
    }
 })

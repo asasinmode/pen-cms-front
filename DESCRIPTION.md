@@ -9,7 +9,11 @@
    - [Układ strony](#układ-strony)
    - [Menu](#menu)
       - [Napotkane wyzwania - menu](#napotkane-wyzwania---menu)
- 
+   - [Dashboard](#dashboard)
+   - [Configuration](#configuration)
+   - [Browse](#browse)
+   - [Login](#login)
+   - [Modal](#modal)
 
 ## Idea
 
@@ -81,17 +85,23 @@ Zdecydowałem się na raczej klasyczny, kojarzący mi się z CMS układ z rozwij
 
 Menu ma mieć możliwość zwinięcia oraz ma pozwalać na swobodną nawigację po stronie.
 
-Nawigacja zawiera kolejno:
+Nawigacja zawiera:
 
-1. Link pomijający nawigację
-2. Guzik rozwijający/zwijający menu. Guzik zawiera mini logo oraz ikonkę wskazującą na obecny stan menu.
-3. Linki do podstron
-4. Guzik widoczny jedynie na mobilnych urządzeniach otwierający/zamykający menu
+<p align=center>
+[menu split.jpg]
+</p>
+
+1. Guzik rozwijający/zwijający menu. Guzik zawiera mini logo oraz ikonkę wskazującą na obecny stan menu.
+2. Linki do podstron
+3. Link pomijający nawigację
+
+Oraz guzik widoczny jedynie na mobilnych urządzeniach otwierający/zamykający menu
 
 Powyższa struktura sprawia, że pierwsza rzecz do jakiej nawiguje się klawiaturą to link pomijający nawigację. Po przejściu przez całe menu, zależnie od urządzenia, albo trafia się na kolejny element strony, na której jesteśmy, albo na guzik pozwalający na zamknięcie menu.
 
+Link pomijający nawigację najzwyczajniej zsuwa w dół siebie i resztę nawigacji kiedy jest zfocusowany.
+
 ### Napotkane wyzwania - menu
-<!-- DODAĆ SCREENY -->
 
 #### Wygląd na urządzeniach mobilnych
 
@@ -103,7 +113,11 @@ O ile brzmi to absolutnie zwyczajnie, to należy zwrócić uwagę na fakt, że r
 
 Przykładowo: Załóżmy menu, które na urządzeniach mobilnych znajduje się poza ekranem i kiedy użytkownik otworzy je guzikiem wsuwa się z dowolnej strony a reszta strony jest przyciemniona.
 
-Gdy użytkownik kliknie na guzik, zamiast usuwać go i wjeżdżać z boku ekranu naszą nawigacją razem z jej półprzeźroczystym całym tłem, zmieniamy styl guzika chowając jego ikonkę, powiększamy go tak, żeby zajmował całe pozostałe miejsce na ekranie i ustawiamy jego tło na półprzeźroczysty czarny.
+Gdy użytkownik kliknie na **guzik (1)**, zamiast usuwać go i wjeżdżać z boku ekranu naszą nawigacją razem z jej półprzeźroczystym całym tłem, zmieniamy styl guzika chowając jego ikonkę, powiększamy go tak, żeby zajmował całe pozostałe miejsce na ekranie i ustawiamy jego tło na półprzeźroczysty czarny **(2)**.
+
+<p align=center>
+[mobile menu split.jpg]
+</p>
 
 Gdy użytkownik zamyka menu, albo przy pomocy guzika na górze zawierającego logo, albo klikając poza nawigacją na przyciemnioną część ekranu, chowamy menu poza ekran i przywracamy oryginalny styl guzika.
 
@@ -114,8 +128,6 @@ Z racji, że guzik pełni zarówno funkcję otwierania nawigacji na urządzeniac
 Menu na urządzeniach mobilnych jest domyślnie zwinięte, natomiast przy większych rozdzielczościach jest rozwinięte. Guzik rozwijający menu jest drugi w kolejności nawigowania po linku pomijającym nawigację lub, na urządzeniach mobilnych, ostatni.
 
 Wynika z tego, że użytkownik nawigujący klawiaturą na urządzeniu mobilnym najpierw zaczyna przemieszczać się po wizualnie ukrytych elementach zanim dojdzie do widocznego guzika pozwalającego mu na otworzenie menu.
-
-Link pomijający nawigację najzwyczajniej zsuwa w dół siebie i resztę nawigacji kiedy jest zfocusowany.
 
 Dodatkowym problemem jest fakt, że guzik otwierający mobilną nawigację, kiedy jest obecnie [aktywnym elementem](https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement), ma dookoła siebie domyślny outline wskazujący. Nie jest to problemem kiedy guzik jest w swojej domyślnej formie małego kółka, jednak kiedy guzik zmienia swój wygląda na pełnoekranowy backdrop dla nawigacji, obwódka dookoła niego jest zarówno nie na miejscu jak i zwodnicza.
 
@@ -178,3 +190,100 @@ handleTabNavigation(e: KeyboardEvent){
 ```
 
 ## Dashboard
+
+Podstrona ma pozwalać na zarządzanie długopisami, czyli dodawanie nowych oraz edytowanie i usuwanie istniejących. Dodawania i usuwanie długopisów dostępne jest jedynie po zalogowaniu.
+
+Zawiera 2 różne elementy:
+
+<p align=center>
+[dashboard.jpg]
+</p>
+
+1. Guzik do tworzenia nowego długopisu.
+2. Podgląd każdego stworzonego długopisu z guzikami do usuwania i edytowania na samym dole. Podgląd pokazuje 2 domyślnie wymagane właściwości (*brand* i *ink color*) i wielokropek w przypadku, gdy długopis ma dodatkowe właściwości.
+
+Żeby utrzymać raczej czysty wygląd i z uwagi na fakt, że każdy długopis jest tworzony i edytowany w ten sam sposób, zdecydowałem się umieścić edytor w modalu.
+
+Wszystkie 3 guziki otwierają modale. Tworzenie i edytowanie ten sam, z edytorem długopisów, natomiast usuwanie modal proszący o potwierdzenie usunięcia.
+
+
+Edytor dzieli się na 3 sekcje:
+
+<p align=center>
+[pen edit modal.jpg]
+</p>
+
+1. Nazwa długopisu i rozwijaną listę ze wszystkimi dostępnymi *"właściwościami"* długopisu, jakich ten jeszcze nie ma.
+2. Podgląd obrazu długopisu i pole do zuploadowania nowego obrazu.
+3. Tabelkę zawierającą obecnie przypisane do długopisu właściwości, rozwijaną listę z dostępnymi wartościami dla tych wartości oraz guzik do usuwania właściwości z długopisu.
+
+Domyślnie każdy długopis musi mieć 2 właściwości. *Brand* - producent i *ink color* - kolor wkładu. Edytować i dodawać właściwości można na kolejnej podstronie [konfiguracja](#configuration).
+
+## Configuration
+
+Ta podstrona ma umożliwiać dodawania, usuwanie i edytowanie dostępnych dla długopisów właściwości. Żeby wprowadzić na niej jakiekolwiek zmiany trzeba być zalogowanym.
+
+Składają się na nią 2 typy rozwijalnych sekcji:
+
+<p align=center>
+[configuration.jpg]
+</p>
+
+1. Sekcje istniejących właściwości.
+2. Sekcja tworzenia nowej właściwości.
+
+Po rozwinięciu sekcje ujawniają:
+
+<p align=center>
+[configuration edit expanded.jpg]
+</p>
+
+1. Pole do edytowania nazwy właściwości.
+2. Pola/guziki dla każdej wartości właściwości. **CTRL+CLICK PRZEŁĄCZA POLE MIĘDZY PUSTYM (USUNIĘCIE) A ORIGINALNĄ WARTOŚCIĄ**
+
+I na samym dole zawierają guziki, odpowiednio *add* lub *delete/save*, otwierające modale proszące o potwierdzenie zmiany. Więcej o nich w sekcji [modale](#modal)
+
+## Browse
+
+Podstrona służąca do przeglądania długopisów oraz filtrowania ich wyszukiwarką.
+
+Składają się na nią:
+
+<p align=center>
+[browse.jpg]
+</p>
+
+1. Wyszukiwarka
+2. Lista długopisów
+
+### Napotkane wyzwania - browse
+
+### Wyszukiwarka
+
+W przypadku tworzenia wyszukiwarki można wybrać 2 podejścia. Albo produkty filtrowane sa po stronie klienta, albo po stronie serwera.
+
+W drugim wypadku należałoby zaimplementować funkcję filtrowania produktów używając [url queries](https://developer.mozilla.org/en-US/docs/Web/API/URL_API#queries). Dodatkowo, żeby uniknąć wysyłania niepotrzebnie dużej ilości zapytań, jedno za każdym razem, kiedy użytkownik zmieni wartość szukanej frazy, używa się [debouncowania](https://www.freecodecamp.org/news/javascript-debounce-example#what-is-debounce). To podejście, przypadkach, kiedy ilość dostępnych produktów jest większa, niż ma to sens wysyłać za jednym razem do klienta (na przykład gdybyśmy ograniczyli produkty do wyświetlania maksymalnie 10 naraz).
+
+Ponieważ implementacja wyszukiwania po stronie serwera jest o wiele bardziej pracochłonna od filtrowania otrzymanych długopisów po stronie klienta oraz z uwagi na fakt, że w przypadku tego projektu długopisów nie będzie dużo, zdecydowałem się na filtrowanie po stronie klienta.
+
+Funkcja filtrująca długopisy łączy ze sobą nazwę długopisu oraz jego właściwości i ich wartości w jeden długi tekst, a następnie, jeśli ten tekst nie ma w sobie jakiegokolwiek z wyszukiwanych słów (przykładowo fraza *"brand pen"* ma w sobie dwa słowa, *"brand"* i *"pen"*) usuwa go z listy długopisów do wyświetlenia, i zwraca wszystkie pozostałe długopisy.
+
+```typescript
+filteredPens(){
+  // if there is no search filter return all pens
+  if(this.searchFilter === ""){ return this.pens }
+
+  const foundIndexes = this.mergedTextPens.filter((textPen) => {
+    let rv = true
+    this.splitSearchFilter.forEach(word => {
+        const mergedTextContainsWord = textPen.textContent.indexOf(word) !== -1
+        if(!mergedTextContainsWord){
+          rv = false
+        }
+    })
+    return rv
+  }).map(textPen => textPen.id)
+
+  return this.pens.filter(pen => foundIndexes.includes(pen._id))
+}
+```
