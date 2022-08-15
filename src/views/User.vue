@@ -33,12 +33,12 @@
             logged in as <span class="block md:hidden"></span>{{ username }}
          </h1>
          <div class="flex flex-row gap-4 text-lg flex-wrap">
-            <Button id="skipTarget" @click="deleteUser" :disabled="isLoading" class="w-52">
+            <Button id="skipTarget" @click="deleteUser" :disabled="isLoading" class="!w-48">
                <span class="z-10 pointer-events-none">
                   delete account
                </span>
             </Button>
-            <Button @click="logout" :disabled="isLoading" class="w-52">
+            <Button @click="logout" :disabled="isLoading" class="!w-48">
                <span class="z-10 pointer-events-none">
                   logout
                </span>

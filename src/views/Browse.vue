@@ -66,7 +66,7 @@ export default defineComponent({
       filteredPens(){
          if(this.searchFilter === ""){ return this.pens }
 
-         const foundIndexes = this.mergedTextPens.filter((textPen) => {
+         const filteredIDs = this.mergedTextPens.filter((textPen) => {
             let rv = true
             this.splitSearchFilter.forEach(word => {
                const mergedTextContainsWord = textPen.textContent.indexOf(word) !== -1
@@ -77,7 +77,7 @@ export default defineComponent({
             return rv
          }).map(textPen => textPen.id)
 
-         return this.pens.filter(pen => foundIndexes.includes(pen._id))
+         return this.pens.filter(pen => filteredIDs.includes(pen._id))
       },
       totalNumberOfPages(){
          return Math.ceil(this.filteredPens.length / this.displayedPerPage)

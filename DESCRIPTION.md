@@ -273,6 +273,8 @@ filteredPens(){
   // if there is no search filter return all pens
   if(this.searchFilter === ""){ return this.pens }
 
+  // mergedTextPens contains an array of
+  // { id: pen._id, textContent: all of pen's text content merged together }
   const foundIndexes = this.mergedTextPens.filter((textPen) => {
     let rv = true
     this.splitSearchFilter.forEach(word => {
@@ -282,7 +284,9 @@ filteredPens(){
         }
     })
     return rv
-  }).map(textPen => textPen.id)
+  })
+    // get only ids
+    .map(textPen => textPen.id)
 
   return this.pens.filter(pen => foundIndexes.includes(pen._id))
 }
