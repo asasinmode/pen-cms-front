@@ -29,7 +29,7 @@ export default defineComponent({
          pens: <ifPen[]>[],
          isLoading: false,
          searchFilter: "",
-         displayedPerPage: 1,
+         displayedPerPage: 5,
          currentPage: 1
       };
    },
