@@ -8,12 +8,15 @@
  - [Front end](#front-end)
    - [Układ strony](#układ-strony)
    - [Menu](#menu)
-      - [Napotkane wyzwania - menu](#napotkane-wyzwania---menu)
+     - [Napotkane wyzwania - menu](#napotkane-wyzwania---menu)
    - [Dashboard](#dashboard)
    - [Configuration](#configuration)
    - [Browse](#browse)
+     - [Napotkane wyzwania - browse](#napotkane-wyzwania---browse)
    - [Login](#login)
    - [Modal](#modal)
+     - [Napotkane wyzwania - modal](#napotkane-wyzwania---modal)
+ - [Back end](#back-end)
 
 ## Idea
 
@@ -246,7 +249,6 @@ I na samym dole zawierają guziki, odpowiednio *add* lub *delete/save*, otwieraj
 ## Browse
 
 Podstrona służąca do przeglądania długopisów oraz filtrowania ich wyszukiwarką.
-
 Składają się na nią:
 
 <p align=center>
@@ -255,6 +257,7 @@ Składają się na nią:
 
 1. Wyszukiwarka
 2. Lista długopisów
+3. Guziki kontrolujące, na której stronie przeglądania jesteśmy. Domyślnie pokazywane jest maksymalnie 5 długopisów naraz.
 
 ### Napotkane wyzwania - browse
 
@@ -275,7 +278,7 @@ filteredPens(){
 
   // mergedTextPens contains an array of
   // { id: pen._id, textContent: all of pen's text content merged together }
-  const foundIndexes = this.mergedTextPens.filter((textPen) => {
+  const filteredIDs = this.mergedTextPens.filter((textPen) => {
     let rv = true
     this.splitSearchFilter.forEach(word => {
         const mergedTextContainsWord = textPen.textContent.indexOf(word) !== -1
@@ -288,6 +291,117 @@ filteredPens(){
     // get only ids
     .map(textPen => textPen.id)
 
-  return this.pens.filter(pen => foundIndexes.includes(pen._id))
+  // return pens that ids match the ones in filteredIDs
+  return this.pens.filter(pen => filteredIDs.includes(pen._id))
 }
 ```
+
+## Login
+
+Podstrona pozwalająca na zarejestrowanie się lub zalogowanie do istniejącego konta. Dodatkowo, kiedy użytkownik jest zalogowany daje możlwość usunięcia konta i wylogowania się.
+
+<p align=center>
+[login.jpg]
+</p>
+
+## Modal
+
+W całej stronie funkcjonują 2 różne typy modali. Funkcjonalność każdego z nich jest taka sama, różnią się jednak zawartością.
+
+Zaczynając od funkcjonalności, otwarty modal powinien przyciemnić resztę strony, "skupić" dowolny ze swoich elementów oraz "uwięzić" nawigację klawiaturą w sobie.
+
+Przechodząc do zawartości:
+
+#### Modal potwierdzający
+
+<p align=center>
+[configuration edit modal.jpg]
+</p>
+
+Prosi o potwierdzenie wprowadzonej zmiany i, w przypadku *konfiguracji właściwości* wyświetla informacje dotyczące obecnej operacji.
+
+#### Modal z edytorem 
+
+<p align=center>
+[new pen modal.jpg]
+</p>
+
+Zawiera w sobie edytor długopisów.
+
+Dodatkowo każdy z tych modali w przypadku, kiedy operacja się nie powiedzie wyświetla wiadomość błędu otrzymanego od serwera.
+
+<p align=center>
+[error modal.jpg]
+</p>
+
+### Napotkane wyzwania - modal
+
+Domyślnie, kiedy ktoś nawigujący klawiaturą otworzy modal klikając `enter` na guziku, albo do dokumentu jest dodawany nowy element zawierający w sobie modal i jego backdrop, albo modalowi i jego elementom zmieniany jest styl `display`.
+
+Ukryty modal i zmiana jego stylu w zależności od potrzeby byłaby preferowanym rozwiązaniem gdyby modal przez większość czasu pozostawał taki sam. W przypadku tej aplikacji rzadko kiedy ma to miejsce, więc w związku z tym oraz faktem, że zależy nam na przesuwaniu *"focusu"* do środka modalu, zdecydowałem się na tworzenie go od zera i usuwanie zamiast chowania.
+
+#### Przenoszenie focusu
+
+Po otworzeniu modalu, aktywny element dokumentu nie zmienia się ponieważ jedyne, co zrobiliśmy to dodaliśmy nowy element do naszej strony. Element ten może znajdować się w dowolnej części strony, jednak w przypadku tej aplikacji dodawany jest on na końcu.
+
+To oznacza, że żeby użytkownik mógł dojść do guzików lub pól tekstowych znajdujących się w modalu będzie on musiał przejść przez wszystkie, częściowo zakryte elementy znajdujące się pomiędzy guzikiem, z którego otworzył modal, a zawartością modalu.
+
+Korzystając z [lifecycle hooku](https://vuejs.org/guide/essentials/lifecycle.html) [mounted](https://vuejs.org/api/options-lifecycle.html#mounted) i tego, że każdy z moich modali ma przynajmniej dwa nawigowalne elementy (guziki *cancel* i *confirm*), do moich guzików dodałem prop `focusOnMounted`. Jeśli jego wartość jest równa `true`, w momencie *"zamontowania"* go przenosi on *focus* dokumentu na siebie.
+
+```typescript
+props: {
+  focusOnMounted: {
+    type: Boolean,
+    default: false
+  }
+},
+mounted(){
+  this.focusOnMounted && this.focusMe()
+},
+methods: {
+  focusMe(){
+    this.$nextTick(() => {
+      this.$refs.me.focus()   
+    })
+  }
+}
+```
+
+Funkcja `focusMe` używa wbudowanej funkcji aplikacji Vue [$nextTick](https://vuejs.org/api/general.html#nexttick), która jako swój argument bierze funkcję, jaka zostanie wywołana po następnej aktualizacji dokumentu, czyli w naszym przypadku po pojawieniu się modalu.
+
+Bez czekania na aktualizację dokumentu w momencie *"zamontowania"* guzika nie jest on jeszcze częścią dokumentu.
+
+#### Nawigacja klawiaturą
+
+Po otworzeniu modalu i przeniesieniu *focusu* na jeden z jego elementów, użytkownik nadal ma możliwość przemieszczania się po wszystkich elementach strony. Oznacza to, że może wyjść do elementu, który jest wizualnie ukryty za naszym modalem.
+
+Żeby uniemożliwić wyjście poza modal do całego modalu dodajemy listener `onkeydown`, podobnie jak w nawigacji i kiedy użytkownik dojdzie do ostatniego nawigowalnego elementu modalu przesuwamy go na pierwszy, a jeśli spróbuje cofnąć się z pierwszego przesuwamy *focus* na ostatni.
+
+```typescript
+handleTabNavigation(e: KeyboardEvent){
+  // get list of all focusable elements inside modal
+  const focusables = this.$refs.contentContainer.querySelectorAll("button,input,select")
+
+  // if shift tabbing from first one focus the last one
+  if(e.shiftKey && document.activeElement === focusables[0]){
+    focusables[focusables.length - 1].focus()
+    e.preventDefault()
+    return
+  }
+
+  // if tabbing from last one focus first one
+  if(!e.shiftKey && document.activeElement === focusables[focusables.length - 1]){
+    focusables[0].focus()
+    e.preventDefault()
+    return
+  }
+}
+```
+
+W przypadku naszej aplikacji szukamy tylko guzików, pól tekstowych i rozwijanych list w elementach modalu.
+
+Z uwagi na fakt, że zawartość naszego modalu zmienia się po zatwierdzeniu zmiany, musimy wyszukiwać wszystkie nawigowalne elementy za każdym razem kiedy użytkownik przemieszcza się po stronie.
+
+# Back end
+
+## In workings... 📄✒️👷
