@@ -81,6 +81,7 @@ Dodatkowo osobiście w moich projektach zależy mi na w pełni funkcjonalnej naw
 Zdecydowałem się na raczej klasyczny, kojarzący mi się z CMS układ z rozwijaną nawigacją po lewej (1) stronie i resztą strony po prawej (2).
 
 <p align=center>
+ 
 ![uklad](https://user-images.githubusercontent.com/63049433/184631144-cf9f7097-65ee-4e4d-8e7a-48f5f554d772.jpg)
 </p>
 
@@ -91,6 +92,7 @@ Menu ma mieć możliwość zwinięcia oraz ma pozwalać na swobodną nawigację 
 Nawigacja zawiera:
 
 <p align=center>
+ 
 ![menu split](https://user-images.githubusercontent.com/63049433/184631173-a10bfd4a-3e49-4b1d-8ab1-d2fcff5cd63d.jpg)
 </p>
 
@@ -119,6 +121,7 @@ Przykładowo: Załóżmy menu, które na urządzeniach mobilnych znajduje się p
 Gdy użytkownik kliknie na **guzik (1)**, zamiast usuwać go i wjeżdżać z boku ekranu naszą nawigacją razem z jej półprzeźroczystym całym tłem, zmieniamy styl guzika chowając jego ikonkę, powiększamy go tak, żeby zajmował całe pozostałe miejsce na ekranie i ustawiamy jego tło na półprzeźroczysty czarny **(2)**.
 
 <p align=center>
+ 
 ![mobile menu split](https://user-images.githubusercontent.com/63049433/184631190-8ab88634-ac3e-4714-a216-4378ff00dc4e.jpg)
 </p>
 
@@ -199,6 +202,7 @@ Podstrona ma pozwalać na zarządzanie długopisami, czyli dodawanie nowych oraz
 Zawiera 2 różne elementy:
 
 <p align=center>
+ 
 ![dashboard](https://user-images.githubusercontent.com/63049433/184631209-34e9e971-6950-4163-9d3b-a924c7a98b35.jpg)
 </p>
 
@@ -213,6 +217,7 @@ Wszystkie 3 guziki otwierają modale. Tworzenie i edytowanie ten sam, z edytorem
 Edytor dzieli się na 3 sekcje:
 
 <p align=center>
+ 
 ![pen edit modal](https://user-images.githubusercontent.com/63049433/184631230-c20389d8-5642-4dce-be22-01de8ef4e7bc.jpg)
 </p>
 
@@ -229,6 +234,7 @@ Ta podstrona ma umożliwiać dodawania, usuwanie i edytowanie dostępnych dla d�
 Składają się na nią 2 typy rozwijalnych sekcji:
 
 <p align=center>
+ 
 ![configuration](https://user-images.githubusercontent.com/63049433/184631301-ad3e2545-c9ed-41b8-a5aa-6a12c5fb9297.jpg)
 </p>
 
@@ -238,6 +244,7 @@ Składają się na nią 2 typy rozwijalnych sekcji:
 Po rozwinięciu sekcje ujawniają:
 
 <p align=center>
+ 
 ![configuration edit expanded](https://user-images.githubusercontent.com/63049433/184631331-78ee8256-10a2-4e6b-bdd6-493b3a2773d3.jpg)
 </p>
 
@@ -252,6 +259,7 @@ Podstrona służąca do przeglądania długopisów oraz filtrowania ich wyszukiw
 Składają się na nią:
 
 <p align=center>
+ 
 ![browse](https://user-images.githubusercontent.com/63049433/184631346-e969551a-f676-4ba3-b269-b27db90e80af.jpg)
 </p>
 
@@ -301,6 +309,7 @@ filteredPens(){
 Podstrona pozwalająca na zarejestrowanie się lub zalogowanie do istniejącego konta. Dodatkowo, kiedy użytkownik jest zalogowany daje możlwość usunięcia konta i wylogowania się.
 
 <p align=center>
+ 
 ![login](https://user-images.githubusercontent.com/63049433/184631367-7c39d5e3-ace5-4a54-bf06-0d1c0e9b6ade.jpg)
 ]
 </p>
@@ -316,6 +325,7 @@ Przechodząc do zawartości:
 #### Modal potwierdzający
 
 <p align=center>
+ 
 ![configuration edit modal](https://user-images.githubusercontent.com/63049433/184631435-9cdd7854-1bca-4f45-b266-05af7fb8572e.jpg)
 </p>
 
@@ -324,6 +334,7 @@ Prosi o potwierdzenie wprowadzonej zmiany i, w przypadku *konfiguracji właściw
 #### Modal z edytorem 
 
 <p align=center>
+ 
 ![new pen modal](https://user-images.githubusercontent.com/63049433/184631450-36fd1a2a-2ad0-46eb-9760-bbb51f6a373e.jpg)
 </p>
 
@@ -332,6 +343,7 @@ Zawiera w sobie edytor długopisów.
 Dodatkowo każdy z tych modali w przypadku, kiedy operacja się nie powiedzie wyświetla wiadomość błędu otrzymanego od serwera.
 
 <p align=center>
+ 
 ![error modal](https://user-images.githubusercontent.com/63049433/184631459-de4a3e99-e168-4e54-ae3d-43697c5db043.jpg)
 </p>
 
