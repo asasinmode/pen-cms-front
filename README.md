@@ -2,6 +2,8 @@
 
 frontend do **pen-cms** stworzony jako **SPA** przy pomocy [Vue](https://vuejs.org/), [TailwindCSS](https://tailwindcss.com/) oraz [Font Awesome](https://fontawesome.com/)
 
+Opis projektu można znaleźć w pliku [DESCRIPTION.md](https://github.com/asasinmode/pen-cms-front/blob/main/DESCRIPTION.md)
+
 ### działające demo aplikacji można znaleźć [tutaj](https://pen-cms-front.netlify.app/)
 
 # instalacja i uruchamianie

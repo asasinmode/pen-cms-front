@@ -432,7 +432,7 @@ W związku z ograniczonym czasem na wykonanie projektu i brak wymagań co do ost
 
 ## endpointy
 
-Jeśli zapytanie na dany endpoint wymaga nagłówku [Authorization](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) w postaci
+Jeśli zapytanie na dany endpoint wymaga nagłówka [Authorization](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) w postaci
 ```json
   "Authorization": "Bearer <token>"
 ```
