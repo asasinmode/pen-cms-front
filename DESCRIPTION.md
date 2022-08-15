@@ -81,7 +81,7 @@ Dodatkowo osobiście w moich projektach zależy mi na w pełni funkcjonalnej naw
 Zdecydowałem się na raczej klasyczny, kojarzący mi się z CMS układ z rozwijaną nawigacją po lewej (1) stronie i resztą strony po prawej (2).
 
 <p align=center>
- 
+
 ![uklad](https://user-images.githubusercontent.com/63049433/184631144-cf9f7097-65ee-4e4d-8e7a-48f5f554d772.jpg)
 </p>
 
@@ -92,7 +92,7 @@ Menu ma mieć możliwość zwinięcia oraz ma pozwalać na swobodną nawigację 
 Nawigacja zawiera:
 
 <p align=center>
- 
+
 ![menu split](https://user-images.githubusercontent.com/63049433/184631173-a10bfd4a-3e49-4b1d-8ab1-d2fcff5cd63d.jpg)
 </p>
 
@@ -121,7 +121,7 @@ Przykładowo: Załóżmy menu, które na urządzeniach mobilnych znajduje się p
 Gdy użytkownik kliknie na **guzik (1)**, zamiast usuwać go i wjeżdżać z boku ekranu naszą nawigacją razem z jej półprzeźroczystym całym tłem, zmieniamy styl guzika chowając jego ikonkę, powiększamy go tak, żeby zajmował całe pozostałe miejsce na ekranie i ustawiamy jego tło na półprzeźroczysty czarny **(2)**.
 
 <p align=center>
- 
+
 ![mobile menu split](https://user-images.githubusercontent.com/63049433/184631190-8ab88634-ac3e-4714-a216-4378ff00dc4e.jpg)
 </p>
 
@@ -202,7 +202,7 @@ Podstrona ma pozwalać na zarządzanie długopisami, czyli dodawanie nowych oraz
 Zawiera 2 różne elementy:
 
 <p align=center>
- 
+
 ![dashboard](https://user-images.githubusercontent.com/63049433/184631209-34e9e971-6950-4163-9d3b-a924c7a98b35.jpg)
 </p>
 
@@ -217,7 +217,7 @@ Wszystkie 3 guziki otwierają modale. Tworzenie i edytowanie ten sam, z edytorem
 Edytor dzieli się na 3 sekcje:
 
 <p align=center>
- 
+
 ![pen edit modal](https://user-images.githubusercontent.com/63049433/184631230-c20389d8-5642-4dce-be22-01de8ef4e7bc.jpg)
 </p>
 
@@ -234,7 +234,7 @@ Ta podstrona ma umożliwiać dodawania, usuwanie i edytowanie dostępnych dla d�
 Składają się na nią 2 typy rozwijalnych sekcji:
 
 <p align=center>
- 
+
 ![configuration](https://user-images.githubusercontent.com/63049433/184631301-ad3e2545-c9ed-41b8-a5aa-6a12c5fb9297.jpg)
 </p>
 
@@ -244,7 +244,7 @@ Składają się na nią 2 typy rozwijalnych sekcji:
 Po rozwinięciu sekcje ujawniają:
 
 <p align=center>
- 
+
 ![configuration edit expanded](https://user-images.githubusercontent.com/63049433/184631331-78ee8256-10a2-4e6b-bdd6-493b3a2773d3.jpg)
 </p>
 
@@ -259,7 +259,7 @@ Podstrona służąca do przeglądania długopisów oraz filtrowania ich wyszukiw
 Składają się na nią:
 
 <p align=center>
- 
+
 ![browse](https://user-images.githubusercontent.com/63049433/184631346-e969551a-f676-4ba3-b269-b27db90e80af.jpg)
 </p>
 
@@ -309,9 +309,8 @@ filteredPens(){
 Podstrona pozwalająca na zarejestrowanie się lub zalogowanie do istniejącego konta. Dodatkowo, kiedy użytkownik jest zalogowany daje możlwość usunięcia konta i wylogowania się.
 
 <p align=center>
- 
+
 ![login](https://user-images.githubusercontent.com/63049433/184631367-7c39d5e3-ace5-4a54-bf06-0d1c0e9b6ade.jpg)
-]
 </p>
 
 ## Modal
@@ -325,7 +324,7 @@ Przechodząc do zawartości:
 #### Modal potwierdzający
 
 <p align=center>
- 
+
 ![configuration edit modal](https://user-images.githubusercontent.com/63049433/184631435-9cdd7854-1bca-4f45-b266-05af7fb8572e.jpg)
 </p>
 
@@ -334,7 +333,7 @@ Prosi o potwierdzenie wprowadzonej zmiany i, w przypadku *konfiguracji właściw
 #### Modal z edytorem 
 
 <p align=center>
- 
+
 ![new pen modal](https://user-images.githubusercontent.com/63049433/184631450-36fd1a2a-2ad0-46eb-9760-bbb51f6a373e.jpg)
 </p>
 
@@ -343,7 +342,7 @@ Zawiera w sobie edytor długopisów.
 Dodatkowo każdy z tych modali w przypadku, kiedy operacja się nie powiedzie wyświetla wiadomość błędu otrzymanego od serwera.
 
 <p align=center>
- 
+
 ![error modal](https://user-images.githubusercontent.com/63049433/184631459-de4a3e99-e168-4e54-ae3d-43697c5db043.jpg)
 </p>
 
@@ -417,4 +416,216 @@ Z uwagi na fakt, że zawartość naszego modalu zmienia się po zatwierdzeniu zm
 
 # Back end
 
-## In workings... 📄✒️👷
+Back end ma wystawiać REST API spełniające potrzeby front endu. Zaczynając zatem od określenia tych potrzeb:
+
+1. Odczytywanie i edytowanie długopisów i ich właściwości z oraz zapisywanie do bazy danych.
+2. Zapisywanie i usuwanie obrazów długopisów.
+3. Rejestrowanie, logowanie, weryfikowanie i usuwanie kont użytkowników do bazy danych.
+
+W związku z ograniczonym czasem na wykonanie projektu i brak wymagań co do ostatecznej wielkości/wydajności części back end tego projektu, do spełnienia tych potrzeb użyte zostały zewnętrzene paczki.
+
+ - [express](https://www.npmjs.com/package/express), [express-async-handler](https://www.npmjs.com/package/express-async-handler), [dotenv](https://www.npmjs.com/package/dotenv), [cors](https://www.npmjs.com/package/cors) - podstawowa funkcjonalność api umożliwiająca łatwe dodawanie endpointów i odczytywanie zmiennych środowiskowych, w których przechowywane są wrażliwe dane.
+ - [mongoose](https://www.npmjs.com/package/mongoose) - MongoDB oferuje własną paczkę do komunikacji z bazą danych, jednak *mongoose* zdecydowanie ułatwia i przyśpiesza ten proces.
+ - [cloudinary](https://www.npmjs.com/package/cloudinary), [image-size](https://www.npmjs.com/package/image-size) - komunikacja z serwisem, w którym zapisywane są zdjęcia długopisów oraz odczytywanie wymiarów obrazu.
+ - [formidable](https://www.npmjs.com/package/formidable) - w związku z koniecznością odbierania obrazów wysyłanych przez front, żeby uniknąć kodowania i dekodowania ich do formatów tekstowych, wysyłane są one w formie [multipart/form-data](https://developer.mozilla.org/en-US/docs/Web/API/FormData), która później przetwarzana jest przez tą paczkę.
+ - [bcryptjs](https://www.npmjs.com/package/bcryptjs), [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - szyfrowanie haseł użytkowników oraz generowanie [JWT](https://jwt.io/), którego użytkownik używa do weryfikacji swoich zapytań.
+
+## endpointy
+
+Jeśli zapytanie na dany endpoint wymaga nagłówku [Authorization](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) w postaci
+```json
+  "Authorization": "Bearer <token>"
+```
+
+to endpoint ten ma przy sobie gwiazdkę *.
+
+***
+
+### /
+
+Pomimo, że API kojarzy się tylko z wystawianiem danych lub plików osobiście lubię, kiedy na jego głównej stronie znaleźć można coś więcej, niż sam tekst 😉.
+
+### /pens
+
+Wszystko związane z długopisami. Dozwolone zapytania i endpointy to:
+
+- **/**
+   - **GET** - lista wszystkich długopisów
+   - **POST\*** - tworzenie długopisu. Format to [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) z kluczami
+   ```typescript
+   {
+    "name": string;
+    "properties": {
+      "brand": string;
+      "ink color": string;
+      [key: string]: string;
+    };
+    "image"?: Blob;
+   }
+   ```
+- **/:id**
+   - **GET** - dane pojedynczego długopisu
+   - **DELETE\*** - usunięcie długopisu o danym id
+   - **PATCH** - aktualizacja długopisu, format ten sam co *POST* z wyjątkiem tego, że pole *name* jest opcjonalne.
+
+### /properties
+
+Właściwości długopisów (podstrona [configuration](#configuration))
+
+- **/**
+   - **GET** - lista wszystkich właściwości
+   - **POST\*** - tworzenie właściwości. Format to
+   ```typescript
+   {
+    "name": string;
+    "properties"?: Record<string, string>;
+   }
+   ```
+- **/:property** gdzie `req.params.property` to wartość pola `name` właściwości
+   - **GET** - dane pojedynczej właściwości
+   - **DELETE\*** - usunięcie właściwości z bazy danych i ze wszystkich długopisów, które mają ją przypisaną.
+   - **PATCH\*** - aktualizacja właściwości, format to
+   ```typescript
+   {
+    "newName"?: string;
+    "added"?: string[];
+    "deleted"?: string[];
+    "updated"?: Record<string, string>;
+   }
+   ```
+
+### /users
+
+Rejestrowanie, logowanie i usuwanie użytkowników
+
+- **/**
+   - **POST** - tworzenie użytkownika. Format to
+   ```typescript
+   {
+    "name": string;
+    "password": string;
+   }
+   ```
+   zwraca 
+   ```typescript
+   {
+    "id": ObjectId;
+    "name": string;
+    "token": string;
+   }
+   ```
+- **/login**
+   - **POST** - logowanie użytkownika. Ten sam format i odpowiedź co *POST*
+- **/:name**
+   - **DELETE\*** - usunięcie użytkownika. Działa tylko wtedy, kiedy JWT w zapytaniu należy do użytkownika, który ma zostać usunięty.
+
+### /affectedBy
+
+#### GET /delete
+
+Zwraca ilość długopisów z przypisaną wartością podaną w `req.query.property`. Dla wielu wartości poszczególne oddzielane sa spacją.
+
+Przykładowo dla zapytania `/affectedBy/delete?property=brand,cap` odpowiedź to
+```json
+{
+  "brand": 3,
+  "cap": 1
+}
+```
+
+#### GET /updated
+
+Zwraca ilość długopisów z przypisaną właściwością i jej konkretnymi wartościami dla każdej wartości podanej w `req.query.updated` i `req.query.deleted`.
+
+Przykładowo dla zapytania `/affectedBy/update?property=ink color&updated=black&deleted=blue` odpowiedź to
+```json
+{
+  "updated": {
+    "black": 1
+  },
+  "deleted": {
+    "blue": 2
+  }
+}
+```
+
+## Napotkane wyzwania - back
+
+### affectedBy
+
+Zależało mi na tym, żeby użytkownik wiedział, ile długopisów zostanie zmienionych w skutek wprowadzonych przez niego zmian we właściwościach długopisów.
+
+Najprostyszm podejściem wydaje się wysłanie zapytania do serwera o wszystkie długopisy a następnie zliczenie ich u klienta. To rozwiązanie ma jednak swoje wady, ponieważ klient dostaje mnóstwo niepotrzebnych mu danych o długopisach kiedy interesuje go tylko ilość kilku konkretnych.
+
+Kolejnym krokiem w złożoności rozwiązania byłoby dodanie do endpointu `GET /pens` odczytywanie `req.query`, jednak domyślnie endpoint ten ma odsyłać długopisy w całości oraz dodałoby to zbędnej dla tej części kodu logiki.
+
+W związku z tym zdecydowałem się na dodanie dodatkowego endpointu do API odpowiedzialnego wyłącznie za to. 
+
+Sama funkcjonalność tego endpointu nie jest niczym wyjątkowym, jednak uważam, że w tym przypadku dodanie endpointu to jedno z najelegantniejszych rozwiązań.
+
+### weryfikacja wysyłanych danych
+
+Osobiście znajduję pisanie back endu zdecydowanie mniej ekscytującym niż front endu, jednak największą trudność sprawiała mi weryfikacja danych wysyłanych przez klienta.
+
+Wydaje się to trochę nietypowe kiedy to ja tworzę obydwie części projektu. Sam nie zagłębiałem się w standardy tworzenia API i nie jestem pewien czy jest to standardowe podejście ale uważam, że API powinno działać prawidłowo również w sytuacji, kiedy dostaje zapytania od nieoryginalnego klienta.
+
+W związku z tym, żeby uniknąć niechcianych rzeczy w bazie danych lub nieprzewidzanych zachowań starałem się ograniczyć wolność jaką ma klient przy tworzeniu zapytania i weryfikować wszystkie dane otrzymywane przez API, jakie przyszły mi do głowy.
+
+Poniżej jeden przykład sprawdzania, czy forma nowego długopisu wysłana przez klienta jest zgodna z wymaganiami. Funkcja zwraca wiadomość, jaka powinna być wysłana do klienta kiedy dane są błędne, lub pusty tekst, kiedy zostały uznane za prawidłowe.
+
+```javascript
+const validateFormData = (formdata, canNameBeUndefined = false) => {
+  const fields = formdata.fields
+
+  // name can be undefined when pen is being updated
+  // so we check for whether it's undefined only when it can't be
+  const isNameUndefined = fields.name === undefined
+  if(!canNameBeUndefined && isNameUndefined){
+    return "field `name` is required"
+  }
+
+  // if name can be undefined we check if it's either
+  // undefined or is a string with length bigger than 0
+  // if it can't be undefined we check only
+  // whether it's length is bigger than 0
+  const isNameValid = canNameBeUndefined ?
+    fields.name === undefined || (fields.name && fields.name[0] !== "")
+    : fields.name[0] !== ""
+  if(!isNameValid){
+    return "name cannot be empty"
+  }
+
+  // wrapped in try...catch block because we need it to be
+  // a valid JSON, so parsing can throw an error
+  try {
+    if(fields.properties !== undefined){
+        const parseResults = JSON.parse(fields.properties[0])
+
+        // even if parsing succeeds we need it to be an object
+        if(typeof parseResults !== 'object'){ return "invalid properties format" }
+
+        // and that object needs to have field `brand`
+        const hasBrand = parseResults.brand
+        if(!hasBrand){ return "property \"brand\" is required" }
+
+        // and field `ink color`
+        const hasInkColor = parseResults['ink color']
+        if(!hasInkColor){ return "property \"ink color\" is required" }
+    }
+  } catch(e){
+    return "invalid properties format"
+  }
+
+  // image can be either undefined
+  // or needs to be of a valid MIME type
+  // in this case those being
+  // ['image/webp', 'image/png', 'image/jpeg']
+  const isImageValid = !formdata.files.image || validMimeTypes.includes(formdata.files.image[0].mimetype)
+  if(!isImageValid){
+    return "invalid image mimetype. supported: jpeg, png, webp"
+  }
+
+  // empty string is interpreted as passing all checks
+  return ""
+}
+```
