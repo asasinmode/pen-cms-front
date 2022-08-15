@@ -126,7 +126,15 @@ Adresując najpierw drugi problem, najprostszym rozwiązaniem (poza usunięciem 
 
 minusy tego rozwiązania są praktycznie niezauważalne.
 
-Przechodząc do pierwszego problemu nawigowania po niewidocznych elementach. Biorąc pod uwagę, że pierwszym elementem do jakiego nawigujemy idąc od początku strony jest nasz link pomijający nawigację, a idąc od środka strony jest ostatni link (do strony */browse*, ostatniemu guzikowi wyłączyliśmy możliwość bycia nawigowanym do), najprościej jest dodać do obydwu tych elementów listener `onfocus` aktywujący się w momencie nawigowania na nie.
+Przechodząc do pierwszego problemu nawigowania po niewidocznych elementach. Biorąc pod uwagę, że pierwszym elementem do jakiego nawigujemy idąc od początku strony jest nasz link pomijający nawigację, a idąc od środka strony jest ostatni link (do strony */user*, ostatniemu guzikowi wyłączyliśmy możliwość bycia nawigowanym do), najprościej jest dodać do obydwu tych elementów listener `onfocus` aktywujący się w momencie nawigowania na nie.
+
+```typescript
+expandMenuWhenFocused(e: FocusEvent){
+  // don't open if focusing last link from outside on desktop
+  if(window.innerWidth > 768 && e.target === this.lastLink){ return }
+  this.isExpanded = true
+}
+```
 
 Listener `onfocus` po prostu rozwija menu. Teraz, kiedy ktoś nawigujący klawiaturą na urządzeniu mobilnym "najedzie" na pierwszy element naszej strony, *aktywny* element będzie zawsze widoczny.
 
@@ -134,6 +142,39 @@ Musimy mieć jednak na uwadze fakt, że niezależnie od rozdzielczości strony n
 
 Rozwiązujemy ten problem dodając w funkcji `onfocus` sprawdzenie czy [poprzednim aktywnym elementem](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/relatedTarget) był albo drugi, albo przedostatni element nawigacji. Jeśli elementy są zfocusowane z czegokolwiek znajdującego się poza menu to rozwijamy naszą nawigację.
 
+```typescript
+expandMenuWhenFocused(e: FocusEvent){ 
+  // expands menu when element is focused from outside
+  if(e.relatedTarget !== this.lastLink && e.relatedTarget !== this.firstButton){
+    if(window.innerWidth > 768 && e.target === this.lastLink){ return }
+    this.isExpanded = true
+  }
+}
+```
+
 Po dodaniu otwierania menu przy nawigowaniu do jego ostatniego lub pierwszego elementu z racji, że nasz guzik na samym końcu nie jest nawigowalny do, pozostało nam dodanie zamykania.
 
 Robimy to ustawiając listener `onkeydown` na całej nawigacji zwijający menu (tylko na urządzeniach mobilnych, większe rozdzielczości zawsze mają menu widoczne w jakimś stopniu) kiedy użytkownik kliknie `shift+tab` na pierwszym linku lub `tab` na ostatnim.
+
+```typescript
+handleTabNavigation(e: KeyboardEvent){
+  if(window.innerWidth > 768){ return }
+
+  // close when shift tabbing from skip link
+  if(document.activeElement === this.$refs.skipLink && e.shiftKey){
+    this.isExpanded = false
+    return
+  }
+
+  // close when tabbing from last link
+  if(document.activeElement === this.lastLink && !e.shiftKey){
+    this.isExpanded = false
+    return
+  }
+
+  // always expand when navigation is happening
+  this.isExpanded = true
+}
+```
+
+## Dashboard

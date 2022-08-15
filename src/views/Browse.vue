@@ -9,7 +9,7 @@
          </div>
          <ListItem v-for="pen in filteredPens" :key="pen._id" :pen="pen" />
       </template>
-      <Loading v-else />
+      <Loading v-else class="w-full h-full" />
    </main>
 </template>
 

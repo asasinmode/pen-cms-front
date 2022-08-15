@@ -32,7 +32,7 @@
          </Modal>
       </template>
       <template v-else>
-         <Loading />
+         <Loading class="w-full h-full" />
       </template>
    </main>
 </template>
