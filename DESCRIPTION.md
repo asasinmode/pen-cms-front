@@ -17,6 +17,9 @@
    - [Modal](#modal)
      - [Napotkane wyzwania - modal](#napotkane-wyzwania---modal)
  - [Back end](#back-end)
+   - [Endpointy](#endpointy)
+   - [Napotkane wyzwania - back](#napotkane-wyzwania---back)
+
 
 ## Idea
 
