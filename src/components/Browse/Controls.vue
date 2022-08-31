@@ -61,7 +61,6 @@ export default defineComponent({
       setLimitedValue(target: number){
          const limitedValue = target < 1 ? 1 : target > this.totalNumberOfPages ? this.totalNumberOfPages : target
 
-         console.log("settin inputValue to", limitedValue)
          this.inputValue = limitedValue.toString()
          this.$emit('moveTo', limitedValue)
       }
