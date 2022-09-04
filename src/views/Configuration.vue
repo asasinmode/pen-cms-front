@@ -23,7 +23,7 @@
                   :deleted="operationData.deleted"
                />
                <h3 v-else-if="operationData.type === 'delete'" class="text-2xl text-center">
-                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s are" : " is" }} will be affected
+                  <span class="highlighted">{{ operationData.affectedCount }}</span> pen{{ isAffectedNumberPlural ? "s" : "" }} will be affected
                </h3>
             </template>
             <template v-else #default>
